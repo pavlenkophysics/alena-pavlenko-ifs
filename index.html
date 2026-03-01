@@ -3,26 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Алёна Павленко — IFS-практик</title>
-  <meta name="description" content="Индивидуальные сессии по IFS. Помогаю в сложных периодах выстроить опору внутри и прийти к устойчивости и доверию к себе.">
+  <title>Алёна Павленко — навыки Self и работа с частями (IFS)</title>
+  <meta name="description" content="Работа с состоянием и внутренней системой. Навыки Self, части, состояние. Classic and Evolving IFS.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f2ed;
-      --bg-alt: #fff;
-      --bg-dark: #1c1916;
-      --bg-dark-soft: #2d2824;
-      --text: #1a1816;
-      --text-inverse: #f5f2ed;
-      --muted: #5c554d;
-      --muted-inverse: #b8b2a8;
-      --accent: #e09040;
-      --accent-hover: #c87830;
-      --accent-soft: #f0c498;
-      --accent-line: #e09040;
-      --border: #e0dbd4;
+      --bg: #f7f5f0;
+      --bg-alt: #fffcf7;
+      --bg-beige: #f0ebe2;
+      --bg-dark: #2d3d28;
+      --bg-dark-soft: #3d5038;
+      --text: #2c3028;
+      --text-inverse: #f7f5f0;
+      --muted: #5a6354;
+      --muted-inverse: #b8c9b0;
+      --accent: #6b9e5a;
+      --accent-hover: #5a8c4a;
+      --accent-soft: #b8d4a8;
+      --accent-2: #f2e89e;
+      --accent-2-hover: #e8de7a;
+      --accent-2-soft: #faf6dc;
+      --accent-line: #6b9e5a;
+      --border: #e0ddd4;
       --section-gap: 5rem;
       --section-padding: 5rem 0;
     }
@@ -70,7 +74,7 @@
       padding: 0 1.5rem;
     }
 
-    /* ——— HERO: тёмный блок ——— */
+    /* ——— HERO ——— */
     .hero {
       min-height: 65vh;
       display: flex;
@@ -88,7 +92,7 @@
       right: -20%;
       width: 60%;
       height: 200%;
-      background: radial-gradient(ellipse at center, rgba(224, 144, 64, 0.14) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(107, 158, 90, 0.14) 0%, rgba(242, 232, 158, 0.16) 50%, transparent 70%);
       pointer-events: none;
     }
 
@@ -110,7 +114,7 @@
     }
     @media (min-width: 700px) {
       .hero-inner {
-        grid-template-columns: 1fr 220px;
+        grid-template-columns: 1fr 228px;
         gap: 3rem;
       }
     }
@@ -162,19 +166,75 @@
       color: var(--muted-inverse);
       font-size: 0.95rem;
     }
+    .hero .intro-sub {
+      font-size: 0.9rem;
+      color: var(--muted-inverse);
+      margin-top: 0.25rem;
+      margin-bottom: 0;
+    }
 
     .hero .photo-wrap {
       order: -1;
       margin: 0 auto;
-      padding: 4px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      position: relative;
+      width: 196px;
+      height: 196px;
       border-radius: 50%;
-      box-shadow: 0 0 0 4px rgba(224, 144, 64, 0.35);
+    }
+    /* Внешнее кольцо — зелёный градиент по кругу */
+    .hero .photo-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
+      z-index: 0;
+    }
+    /* Внутреннее кольцо — тёплые тона фото (беж, крем), градиент по кругу */
+    .hero .photo-wrap::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 188px;
+      height: 188px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
+      z-index: 1;
     }
     @media (min-width: 700px) {
       .hero .photo-wrap {
         order: 0;
         margin: 0;
+        width: 228px;
+        height: 228px;
+      }
+      .hero .photo-wrap::before {
+        top: 4px;
+        left: 4px;
+        width: 220px;
+        height: 220px;
+      }
+    }
+    .hero .photo-wrap .hero-photo-inner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 2;
+    }
+    @media (min-width: 700px) {
+      .hero .photo-wrap .hero-photo-inner {
+        top: 8px;
+        left: 8px;
+        width: 212px;
+        height: 212px;
       }
     }
 
@@ -187,18 +247,12 @@
       border: 3px solid var(--accent);
     }
 
-    .hero .photo-wrap img {
-      width: 180px;
-      height: 180px;
+    .hero .photo-wrap .hero-photo-inner img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 50%;
       display: block;
-    }
-    @media (min-width: 700px) {
-      .hero .photo-wrap img {
-        width: 212px;
-        height: 212px;
-      }
+      transform: scaleX(-1) scale(1.3);
     }
 
     .section-with-photo {
@@ -222,7 +276,7 @@
       display: block;
     }
 
-    /* ——— Секция «Мой путь»: фото + карьера в одну строку, остальное на всю ширину ——— */
+    /* ——— Секция «Мой путь» ——— */
     .section-about {
       padding-top: 7rem;
       padding-bottom: 5rem;
@@ -244,9 +298,10 @@
       }
     }
     .about-top .photo-wrap {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 3px solid var(--accent);
+      position: relative;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
       margin-top: 2rem;
     }
     @media (min-width: 700px) {
@@ -254,12 +309,42 @@
         margin-top: 2.1rem;
       }
     }
-    .about-top .photo-wrap img {
+    .about-top .photo-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 180px;
-      aspect-ratio: 1;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
+      z-index: 0;
+    }
+    .about-top .photo-wrap::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 172px;
+      height: 172px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
+      z-index: 1;
+    }
+    .about-top .photo-wrap .about-photo-inner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 164px;
+      height: 164px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .about-top .photo-wrap .about-photo-inner img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 9px;
       display: block;
     }
     .about-rest {
@@ -314,12 +399,13 @@
     .hero .btn {
       background: var(--accent);
       color: #fff;
+      box-shadow: 0 4px 14px rgba(107, 158, 90, 0.4);
     }
     .hero .btn:hover {
       background: var(--accent-hover);
+      box-shadow: 0 4px 18px rgba(107, 158, 90, 0.5);
     }
 
-    /* ——— Секции: чередование светлый / белый ——— */
     section {
       padding: var(--section-padding);
       margin-top: 0;
@@ -375,7 +461,7 @@
       margin-right: 0;
       padding-left: 0;
       padding-right: 0;
-      border-top: 4px solid var(--accent);
+      border-top: 4px solid var(--accent-2);
     }
     section.section-cta .container {
       max-width: 640px;
@@ -437,7 +523,34 @@
 
     .section-method {
       padding-top: 7rem;
-      padding-bottom: 6rem;
+      padding-bottom: 4rem;
+    }
+
+    /* Блок Self и состояние — выделенный */
+    .section-self-state {
+      background: var(--bg-alt);
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+      box-shadow: 0 -1px 0 var(--border);
+    }
+    .section-self-state .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .section-self-state .highlight-box {
+      background: rgba(250, 246, 220, 0.75);
+      border-left-color: var(--accent-2);
+      padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+      margin: 1.5rem 0 0;
+    }
+    .section-self-state .highlight-box p {
+      margin: 0;
+    }
+    .section-self-state .highlight-box p + p {
+      margin-top: 0.75rem;
     }
 
     .quotes {
@@ -459,7 +572,7 @@
     }
 
     .intro-meeting {
-      background: rgba(224, 144, 64, 0.08);
+      background: #fdf6e3;
       padding: 1.25rem 1.25rem 1.25rem 1.5rem;
       border-radius: 8px;
       margin-bottom: 1.5rem;
@@ -548,12 +661,12 @@
 
     .cta-block .btn {
       margin-top: 0.75rem;
-      background: var(--accent);
-      color: #fff;
+      background: var(--accent-2);
+      color: #2c3028;
     }
     .cta-block .btn:hover {
-      background: var(--accent-hover);
-      color: #fff;
+      background: var(--accent-2-hover);
+      color: #1f261c;
     }
 
     footer {
@@ -582,6 +695,71 @@
     .footer-links a {
       margin-right: 1rem;
     }
+
+    .cta-inner {
+      display: grid;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    @media (min-width: 520px) {
+      .cta-inner {
+        grid-template-columns: 1fr 140px;
+      }
+    }
+    .cta-photo {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+    }
+    .cta-photo::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
+      z-index: 0;
+    }
+    .cta-photo::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
+      z-index: 1;
+    }
+    .cta-photo .cta-photo-inner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .cta-photo .cta-photo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cta-content h2 { margin-top: 0; }
+    .cta-content .btn {
+      margin-top: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+    }
+    .cta-content .btn:hover {
+      background: var(--accent-hover);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -591,16 +769,16 @@
         <div class="hero-inner">
           <div class="hero-text">
             <p class="name">Алёна Павленко</p>
-            <p class="name-line2">Практик в подходе</p>
+            <p class="name-line2">Работа с состоянием Self</p>
             <p class="name-line3">Classic and Evolving IFS</p>
-            <p class="name-sub">PhD по физике, 350+ часов телесной практики</p>
-            <p class="intro">Помогаю в сложных периодах выстроить опору внутри: переезд, смена ролей, кризис смысла, усталость от решений.</p>
-            <p class="intro">Через подход IFS и личный опыт сопровождаю к устойчивости и&nbsp;доверию&nbsp;к&nbsp;себе.</p>
-            <p class="cta-line">Запись на бесплатную<br>ознакомительную встречу.</p>
+            <p class="name-sub">Эксперт и куратор IFS Academy, PhD, 350+ часов телесной практики</p>
+            <p class="intro">Я работаю с теми, кто хочет не просто «сходить к специалисту», а научиться выстраивать контакт со своей внутренней системой, со своим состоянием и видеть полезные результаты от этих навыков в повседневной жизни.</p>
+            <p class="intro">Бесплатная встреча 20 минут: познакомимся, обсудим запрос и формат.</p>
+            <p class="intro-sub">Напишите в Telegram — подберём время.</p>
             <a href="#zapis" class="btn">Написать в Telegram</a>
           </div>
           <div class="photo-wrap">
-            <img src="images/DSCF3426 - Copy cropped.jpg?v=2" alt="Алёна Павленко" width="200" height="200">
+            <span class="hero-photo-inner"><img src="images/DSCF3599-cropped.jpg" alt="Алёна Павленко" width="200" height="200"></span>
           </div>
         </div>
       </div>
@@ -608,34 +786,45 @@
 
     <section class="section-alt" id="zaprosy">
       <div class="container">
-        <h2>Частые запросы</h2>
+        <h2>Для кого</h2>
         <ul class="bullets">
-          <li>Бесконечные изменения снаружи и внутри — неясно, как выстраивать жизнь, постоянный стресс, измотанность.</li>
-          <li>Сложно принять решение или решение принято, но внутри гложат сомнения, не ясно, как дальше.</li>
-          <li>Постоянно чего-то достигаю, но нет удовлетворения: внутренний голос требует больше и больше, как будто бегу на месте.</li>
-          <li>В психотерапии уже много лет, многое понятно, но не меняется. Хочется перестать копаться в детстве и видеть конкретные изменения.</li>
-          <li>Как есть — не нравится, как по-другому — непонятно.</li>
+          <li>Пробовал медитации, терапию — на сессии вроде легче, но непонятно, как переносить это в жизнь.</li>
+          <li>Хочется, чтобы то, что получается на сессии, работало и в обычной жизни.</li>
+          <li>Накрывает: тревога, критика, застревание, хаос голосов — непонятно, как с этим быть.</li>
+          <li>Решение принять сложно — или принято, но внутри сомнения.</li>
+          <li>Достигаю целей, а удовлетворения нет: внутренний голос требует больше, как будто бегу на месте.</li>
         </ul>
+      </div>
+    </section>
+
+    <section class="section-self-state" id="self-state">
+      <div class="container">
+        <h2>Self, состояние и навык</h2>
+        <p><strong>Self</strong> в IFS — это состояние, из которого возможны любопытство, спокойствие, принятие. Моя задача — помочь вам выстроить контакт с Self и сделать работу с частями и состоянием вашим навыком. Вы учитесь замечать части, входить с ними в контакт, выстраивать отношения, а также работать с состоянием — с тем, что в теле (напряжение, возбуждение, тяжесть, размытость). Умение возвращаться в опору и слышать себя становится тем, чем вы пользуетесь сами.</p>
+        <p>Два года я училась у <strong>Гэтри Сайена</strong> (Guthrie Sayen) — ученика Ричарда Шварца и одного из ведущих преподавателей Evolving IFS. У него более 15 лет преподавания и более 10 000 часов с клиентами. Гэтри как раз учит не только «что делать», но <strong>как быть</strong>: держать контакт с состоянием, настраиваться в начале сессии, помогать человеку приходить в ресурс. Плюс мой опыт телесной практики — баня, массаж, работа с телом и состоянием, сотни часов — дал умение слышать состояние и не терять с ним контакт.</p>
+        <div class="highlight-box">
+          <p><strong>На сессиях</strong> мы и знакомимся с частями, и целенаправленно работаем с состоянием: замечать, что с вами происходит, опираться на тело и дыхание, возвращаться в ресурс. Цель — чтобы со временем вы делали это сами в повседневной жизни, включая острые эмоциональные ситуации. Я за то, чтобы вы стали самостоятельными в контакте со своей системой.</p>
+        </div>
       </div>
     </section>
 
     <section class="container method section-method" id="method">
       <h2>Метод: IFS и Evolving IFS</h2>
       <h3>Что такое IFS</h3>
-      <p>В IFS (Internal Family Systems) предлагается смотреть на паттерны, установки, внутренние голоса как на части, с которыми можно выстраивать отношения — чтобы гармонизировать внутреннюю систему и развивать устойчивость. В IFS части рассматриваются как имеющие благие намерения: они стремятся нас защищать, каждая по-своему. В многочисленных научных исследованиях метод демонстрирует эффективность в улучшении общего функционирования и благополучия, в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
+      <p>В IFS (Internal Family Systems) паттерны, установки, внутренние голоса рассматриваются как <strong>части</strong> — с ними можно выстраивать отношения. У каждой части благое намерение, каждая по-своему защищает. В центре метода — <strong>Self</strong>: состояние присутствия и принятия, из которого возможен контакт с частями. Метод даёт снять внутреннее напряжение и выстроить навык: замечать части, входить с ними в контакт, двигаться к большей целостности. Исследования показывают эффективность в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
       <h3>Evolving IFS</h3>
-      <p>Фокус на доверительном пространстве, контакте и присутствии: работа с состоянием и телесными ощущениями, настройка в начале сессии. Выстраиваем работу из принятия и эмпатии: приглашаем части в диалог, валидируем их переживания — это не операционный стол, а процесс, в котором человек проживает опыт быть увиденным, услышанным и принятым.</p>
+      <p>Evolving IFS включает в себя классический IFS и добавляет упор на <strong>доверительное пространство</strong>, контакт и присутствие. В начале сессии — сонастройка, работа с состоянием и телом. Вы получаете опыт быть увиденным, услышанным и принятым — и на этом строятся устойчивость и способность опираться на себя.</p>
     </section>
 
     <section class="section-alt" id="session">
       <div class="container">
         <h2>Как проходит сессия</h2>
+        <p style="margin-bottom: 1rem;">Создаю контейнер, в котором ваша система находит опору и решения. Работаем с <strong>состоянием</strong> и с частями; опора на <strong>Self</strong> — из него возможны ясность и контакт. Вы главный эксперт своей внутренней жизни; я помогаю замечать, что поднимается, и бережно следовать за тем, что просит внимания.</p>
         <ul class="bullets">
-          <li>Я предлагаю сонастройку через контакт с телом и дыхание — это помогает сбалансировать нервную систему перед тем, как обращаться к тому, что поднимается.</li>
-          <li>Сессия строится вокруг вашего актуального запроса: знакомимся с теми частями и установками, которые создают напряжение, смотрим, откуда они действуют так, выстраиваем между ними новые отношения.</li>
-          <li>Темп и направление задаёт ваша внутренняя система — мы идём туда, куда она сама хочет идти.</li>
-          <li>Я в роли напарника: ваша система — главный эксперт, я помогаю замечать, что поднимается, и бережно следовать за тем, что требует внимания.</li>
-          <li>В работе со мной вам не нужно перебирать детство и прошлое — работаем с тем, что актуально сейчас.</li>
+          <li>Сонастройка через тело и дыхание — баланс нервной системы, контакт с состоянием перед тем, как обращаться к частям.</li>
+          <li>Работа с запросом: знакомимся с частями и установками, которые создают напряжение; выстраиваем отношения. Параллельно — работа с состоянием: замечать, что в теле, возвращаться в опору и в Self. Всё это — то, чему вы учитесь применять и вне сессии.</li>
+          <li>Темп и направление задаёт ваша система — идём туда, куда она сама хочет идти.</li>
+          <li>Работаем с тем, что актуально сейчас. Цель — контакт с собой, который останется с вами.</li>
         </ul>
       </div>
     </section>
@@ -654,56 +843,63 @@
     <section class="section-about" id="about">
       <div class="container">
         <h2>Мой путь</h2>
+        <p style="margin-bottom: 1.5rem;">На этой странице — откуда я и чем пользуюсь в работе.</p>
         <div class="about-top">
           <div class="photo-wrap">
-            <img src="images/DSCF3548.jpg" alt="Алёна Павленко" width="180" height="180">
+            <span class="about-photo-inner"><img src="images/DSCF3617 cropped.jpg" alt="Алёна Павленко" width="180" height="180"></span>
           </div>
           <div class="about-career-block about-text">
             <p class="about-block-label">Карьера</p>
-            <p>Первая карьера — экспериментальный физик, PhD. Аспирантура в Германии, постдоки в США и Великобритании. После академической карьеры перешла в стратегический консалтинг (Deloitte) в Голландии. Мне всегда нравилось исследовать сложные системы и находить действенные решения. Множество переездов, карьерных и личностных изменений — я знаю изнутри, как теряется опора и как её искать. Устойчивые изменения для меня возможны из доверия к себе и к процессу, а не из давления.</p>
+            <p>По первой профессии я физик, PhD — аспирантура в Германии, постдоки в США и Великобритании. Потом перешла в стратегический консалтинг (Deloitte) в Голландии. Мне всегда было интересно разбираться в сложных системах и искать решения, которые работают. Много переездов и смен — знаю по себе, как теряется опора и как её заново находить. Для меня устойчивые изменения вырастают из доверия к себе и к процессу.</p>
           </div>
         </div>
         <div class="about-rest about-text">
           <p class="about-block-label">Путь к практике</p>
-          <p>К этой работе я пришла своим путём: много лет личной терапии, 350+ часов веду телесную практику (баня, массаж, работа с телом и состоянием), затем IFS. Ни в телесной работе, ни в IFS я не ставила цель стать помогающим практиком — то, что помогало мне самой, я естественным для меня образом осваивала так глубоко, что со временем ко мне стали обращаться. Так было с телом, так вышло и с IFS. Он дал мне колоссальный результат и внедрился в мою жизнь, значимо повысив уровень удовлетворённости.</p>
+          <p>В эту работу я пришла не по плану. Сначала годы своей терапии, потом 350+ часов телесной практики — баня, массаж, работа с телом и состоянием. Потом появился IFS, работа с частями и Self. Помогающим практиком становиться не собиралась — просто то, что помогало мне, осваивала глубоко. Со временем стали обращаться: сначала по телу и состоянию, потом по IFS.</p>
           <p class="about-block-label">Обучение IFS</p>
-          <p>С IFS я познакомилась через Гэтри Сайен — ученика Ричарда Шварца, одного из ведущих преподавателей Evolving IFS; он преподаёт и ведёт практику более 15 лет, за плечами более 10 000 часов с клиентами. Суммарно я прошла два года обучения у него. Также прошла курс Ричарда Шварца IFS and Spirituality.</p>
+          <p>IFS я узнала через Гэтри Сайена — он ученик Ричарда Шварца и один из ведущих преподавателей Evolving IFS, в том числе работы с состоянием и Self. У него больше 15 лет преподавания и больше 10 000 часов с клиентами. Я два года училась у него плюс прошла курс Ричарда Шварца IFS and Spirituality.</p>
           <p class="about-block-label">Сейчас</p>
-          <p>Академия и консалтинг развили во мне системное мышление; телесная практика — умение слышать состояние и присутствовать вниманием в теле. Сейчас я эксперт и куратор в IFS Academy, принимаю клиентов в индивидуальную работу по IFS и продолжаю работу в телесной терапии.</p>
-          <p class="about-block-label">Что меня вдохновляет</p>
-          <p>Меня вдохновляет делиться эффективностью метода IFS и помогать людям знакомиться со своим внутренним миром, выстраивая эффективные и гармоничные отношения со своей системой.</p>
+          <p>Из академии и консалтинга у меня системное мышление. Из телесной практики — умение слышать состояние и быть в теле. Сейчас я эксперт и куратор в IFS Academy, веду индивидуальную работу по IFS (Self, части, состояние) и по-прежнему веду телесную практику.</p>
+          <p class="about-block-label">Что для меня важно</p>
+          <p>Делиться тем, что реально работает. Помогать людям выстроить контакт со своей системой и стать в этом самостоятельными — чтобы навык оставался с вами.</p>
         </div>
       </div>
     </section>
 
     <section class="section-alt" id="first-step">
       <div class="container">
-        <h2>Форматы работы со мной</h2>
+        <h2>Форматы работы</h2>
+        <p style="margin-bottom: 1rem;">Навык Self и работы с частями и состоянием лучше выстраивается в цикле. Разовые сессии — чтобы попробовать и прояснить запрос.</p>
         <div class="intro-meeting">
-          <p><strong>Встреча-знакомство</strong> — 20 минут, бесплатно. На ней у вас будет возможность задать мне любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом. Поймём, в каком формате хочется двигаться дальше.</p>
+          <p><strong>Встреча-знакомство</strong> — 20 минут, бесплатно. На ней вы сможете задать любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом. Решим вместе, в каком формате двигаться дальше.</p>
         </div>
         <div class="formats">
           <dl>
-            <dt>Сессия 60 минут</dt>
-            <dd>Познакомиться с методом на практике, прояснить один актуальный вопрос или почувствовать, как проходит работа.</dd>
-            <dt>Сессия 90 минут</dt>
-            <dd>Для более глубокой работы над запросом, с достаточным временем на разогрев и сам процесс.</dd>
-            <dt>Цикл от месяца</dt>
-            <dd>Чтобы познакомиться со своей системой частей и получить поддержку в переходный период.</dd>
-            <dt>Цикл от двух месяцев</dt>
-            <dd>Чтобы выстраивать более устойчивые изменения и опору — не только в сложный период, но и после него: выйти из режима выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал, в том числе тот, что раньше уходил на внутреннюю борьбу.</dd>
+            <dt>Сессия 60 минут — 80 €</dt>
+            <dd>Попробовать метод, прояснить один вопрос, почувствовать, как идёт работа.</dd>
+            <dt>Сессия 90 минут — 120 €</dt>
+            <dd>Глубже: время на разогрев, контакт с состоянием и процесс.</dd>
+            <dt>Цикл от месяца — 4 встречи по 1 часу, 280 €</dt>
+            <dd>Познакомиться со своей системой частей и состоянием, поддержка в переходный период — начать делать это своим навыком.</dd>
+            <dt>Цикл от двух месяцев — 8 встреч по 1 часу, 500 €</dt>
+            <dd>Устойчивые навыки Self и работы с частями и состоянием: выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</dd>
           </dl>
-          <p class="prices-note">Актуальные цены — по запросу в личных сообщениях.</p>
+          <p class="prices-note">Возможна оплата в рублях и криптовалюте.</p>
         </div>
       </div>
     </section>
 
     <section class="section-cta" id="zapis">
       <div class="container">
-        <h2>Как записаться</h2>
-        <p>Доверительное пространство мы начинаем создавать уже с первой переписки. Напишите мне в личные сообщения — подберём удобный слот для бесплатной встречи. Я отвечу и предложу варианты времени.</p>
-        <div class="cta-block">
-          <a href="https://t.me/Alena_Pavlenko_PhD" class="btn">Написать в Telegram</a>
+        <div class="cta-inner">
+          <div class="cta-content">
+            <h2>Первый шаг</h2>
+            <p>Напишите в Telegram — подберём время для бесплатной 20-минутной встречи. Обсудим запрос и формат.</p>
+            <a href="https://t.me/Alena_Pavlenko_PhD" class="btn">Написать в Telegram</a>
+          </div>
+          <div class="cta-photo">
+            <span class="cta-photo-inner"><img src="images/DSCF3617 cropped1.jpg" alt="" width="140" height="140"></span>
+          </div>
         </div>
       </div>
     </section>
