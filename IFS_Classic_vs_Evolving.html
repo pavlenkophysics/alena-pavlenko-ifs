@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classic IFS & Evolving IFS — сравнение подходов</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #f5f3ee;
+      color: #2c2c2c;
+      line-height: 1.65;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 64px 24px 48px;
+      background: #f5f3ee;
+    }
+    .hero .label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 400;
+      color: #1a1a1a;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: italic; color: #6a5c4a; }
+    .hero .intro {
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* ── COLUMNS HEADER ── */
+    .cols-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 900px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+    }
+    .col-title {
+      padding: 22px 32px;
+      text-align: center;
+      border-radius: 14px 14px 0 0;
+    }
+    .col-title.classic {
+      background: #e8e2d8;
+      border: 1.5px solid #d4cbbf;
+      border-right: none;
+      border-bottom: none;
+      border-radius: 14px 0 0 0;
+    }
+    .col-title.evolving {
+      background: #dde6e2;
+      border: 1.5px solid #c4d5cf;
+      border-left: 1px solid #d4cbbf;
+      border-bottom: none;
+      border-radius: 0 14px 0 0;
+    }
+    .col-title .tag {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      opacity: 0.65;
+    }
+    .col-title h2 {
+      font-size: 20px;
+      font-weight: 400;
+    }
+    .col-title.classic h2 { color: #5a4a35; }
+    .col-title.evolving h2 { color: #2e5045; }
+    .col-title .sub {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ── DIMENSION BLOCKS ── */
+    .dimension {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .dim-label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #999;
+      text-align: center;
+      padding: 18px 0 10px;
+    }
+    .dim-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .dim-row:last-of-type .dim-cell {
+      border-bottom: 1.5px solid;
+    }
+    .dim-row:last-of-type .dim-cell.classic {
+      border-color: #d4cbbf;
+      border-radius: 0 0 0 14px;
+    }
+    .dim-row:last-of-type .dim-cell.evolving {
+      border-color: #c4d5cf;
+      border-radius: 0 0 14px 0;
+    }
+
+    .dim-cell {
+      padding: 28px 32px;
+      border-left: 1.5px solid;
+      border-right: 1.5px solid;
+      border-top: 1px solid;
+    }
+    .dim-cell.classic {
+      background: #f0ece4;
+      border-color: #d4cbbf;
+      border-right-color: transparent;
+    }
+    .dim-cell.evolving {
+      background: #eaf0ed;
+      border-color: #c4d5cf;
+      border-left-color: #d4cbbf;
+    }
+
+    .dim-cell .heading {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+    .dim-cell.classic .heading { color: #5a4a35; }
+    .dim-cell.evolving .heading { color: #2e5045; }
+
+    .dim-cell p {
+      font-size: 14.5px;
+      color: #3a3a3a;
+      line-height: 1.7;
+    }
+    .dim-cell .quote {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-style: italic;
+      color: #555;
+      line-height: 1.6;
+    }
+    .dim-cell.classic .quote { background: #e4ddd2; }
+    .dim-cell.evolving .quote { background: #dce8e3; }
+
+    /* ── DIVIDER ── */
+    .dim-divider {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .dim-divider-inner {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
+      align-items: center;
+    }
+    .div-line-left { height: 1px; background: #d4cbbf; }
+    .div-line-right { height: 1px; background: #c4d5cf; }
+    .div-icon {
+      text-align: center;
+      font-size: 15px;
+      color: #bbb;
+      padding: 6px 0;
+    }
+
+    /* ── METAPHOR BAND ── */
+    .metaphor-band {
+      max-width: 900px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+    }
+    .metaphor-inner {
+      background: #1e1e1e;
+      border-radius: 14px;
+      padding: 40px 40px 36px;
+      color: #e8e2d8;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .metaphor-inner .meta-tag {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+    .metaphor-inner h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .metaphor-inner p {
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 1.7;
+    }
+    .metaphor-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.12);
+      align-self: stretch;
+      display: none; /* handled by gap */
+    }
+
+    /* ── BOTH SHARE ── */
+    .shared {
+      max-width: 900px;
+      margin: 32px auto 0;
+      padding: 0 24px;
+    }
+    .shared-inner {
+      border: 1.5px solid #c8c0b0;
+      border-radius: 14px;
+      padding: 32px 40px;
+      background: #faf8f4;
+    }
+    .shared-inner .tag {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 14px;
+    }
+    .shared-inner h3 {
+      font-size: 17px;
+      font-weight: 400;
+      color: #444;
+      margin-bottom: 16px;
+    }
+    .shared-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 32px;
+    }
+    .shared-item {
+      font-size: 14px;
+      color: #555;
+      padding-left: 18px;
+      position: relative;
+    }
+    .shared-item::before {
+      content: '◆';
+      position: absolute;
+      left: 0;
+      font-size: 7px;
+      top: 6px;
+      color: #b5a992;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 12px;
+      color: #bbb;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .cols-header { grid-template-columns: 1fr; }
+      .col-title.classic { border-radius: 14px 14px 0 0; border-right: 1.5px solid #d4cbbf; border-bottom: none; }
+      .col-title.evolving { border-radius: 0; border-top: 1px solid #c4d5cf; border-left: 1.5px solid #c4d5cf; border-bottom: none; }
+      .dim-row { grid-template-columns: 1fr; }
+      .dim-cell.classic { border-right: 1.5px solid #d4cbbf; border-bottom: none; }
+      .dim-cell.evolving { border-left: 1.5px solid #c4d5cf; border-top: 1.5px solid #c4d5cf; }
+      .dim-row:last-of-type .dim-cell.classic { border-radius: 0; }
+      .dim-row:last-of-type .dim-cell.evolving { border-radius: 0 0 14px 14px; }
+      .shared-list { grid-template-columns: 1fr; }
+      .metaphor-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="label">IFS — два способа работать</div>
+  <h1>Classic IFS &amp; <em>Evolving</em> IFS</h1>
+  <p class="intro">
+    Не «старый и новый» и не «хуже и лучше» — два разных акцента в одной и той же модели.
+    Оба уходят корнями к Ричарду Шварцу. Оба работают с частями, Self и снятием бремени.
+    Разница — в <em>точке входа</em> и в <em>отношении к частям в процессе</em>.
+  </p>
+</div>
+
+<!-- COLUMNS HEADER -->
+<div class="cols-header">
+  <div class="col-title classic">
+    <div class="tag">Подход</div>
+    <h2>Classic IFS</h2>
+    <div class="sub">Шварц · IFS Institute · IFS Russia</div>
+  </div>
+  <div class="col-title evolving">
+    <div class="tag">Подход</div>
+    <h2>Evolving IFS</h2>
+    <div class="sub">Гэтри Сайен · More Self</div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────── -->
+<!-- DIMENSION 1: Точка входа в сессию -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="dimension">
+  <div class="dim-label">01 · точка входа в сессию</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Снизу вверх</div>
+      <p>Работа начинается с частей. Замечаем части, просим их отступить — и Self проявляется по мере того, как части освобождают место. Протокол и шаги — каркас, который ведёт процесс.</p>
+      <div class="quote">«Уберите ограничения — и Self появится сам»</div>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Оба пути: сверху вниз + снизу вверх</div>
+      <p>Каждое занятие открывается практикой присутствия — ground, core, field, focus. Сначала приземляемся в Self, потом встречаем части. Не вместо протокола, а как почва под него.</p>
+      <div class="quote">«Сначала поднимаемся на вершину горы — и уже оттуда встречаем части»</div>
+    </div>
+  </div>
+</div>
+
+<div class="dim-divider"><div class="dim-divider-inner"><div class="div-line-left"></div><div class="div-icon">✦</div><div class="div-line-right"></div></div></div>
+
+<!-- DIMENSION 2: Часть появилась -->
+<div class="dimension">
+  <div class="dim-label">02 · когда часть появляется во время работы</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Попросить отойти</div>
+      <p>Если в процессе появляется часть, классический шаг — попросить её отступить, остаться отдельно, почувствовать пространство между собой и частью. Цель: расчистить место для Self.</p>
+      <div class="quote">«Можешь немного отойти и дать мне пространство?»</div>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Поприветствовать и спросить</div>
+      <p>Часть не отодвигают. Её замечают, приветствуют и спрашивают: «Какое у тебя сообщение?» Затем договариваются о разрешении. Когда части чувствуют себя услышанными — они сами дают место.</p>
+      <div class="quote">«Привет. Что ты хочешь, чтобы я знал(а)?»</div>
+    </div>
+  </div>
+</div>
+
+<div class="dim-divider"><div class="dim-divider-inner"><div class="div-line-left"></div><div class="div-icon">✦</div><div class="div-line-right"></div></div></div>
+
+<!-- DIMENSION 3: Работа с защитником -->
+<div class="dimension">
+  <div class="dim-label">03 · разговор с защитником</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Акцент на страхах</div>
+      <p>Главный вопрос к защитнику: чего он боится? Что произойдёт, если он отпустит контроль или позволит подойти к изгнаннику? Работа идёт через страх и его признание.</p>
+      <div class="quote">«Чего ты боишься, что случится, если не будешь этого делать?»</div>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Страхи + наилучший сценарий</div>
+      <p>К страхам добавляется движение к ресурсу: «Если бы тот, кого ты защищаешь, уже был исцелён — что тогда стало бы возможным для тебя?» Это не вместо страхов, а ещё одна линия.</p>
+      <div class="quote">«Если бы ему уже было лучше — что тогда?»</div>
+    </div>
+  </div>
+</div>
+
+<div class="dim-divider"><div class="dim-divider-inner"><div class="div-line-left"></div><div class="div-icon">✦</div><div class="div-line-right"></div></div></div>
+
+<!-- DIMENSION 4: Получение разрешения -->
+<div class="dimension">
+  <div class="dim-label">04 · получение разрешения от защитника</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Разрешение через контакт</div>
+      <p>Разрешение защитников — ключевой шаг перед работой с изгнанниками. Его получают через установление контакта, выслушивание страхов, признание роли части. Явного «списка» нет — это органичный процесс.</p>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Три сообщения — явно</div>
+      <p>Гэтри выделяет три сообщения, которые защитник должен услышать, чтобы открыть ворота:</p>
+      <div class="quote">
+        <strong>1. Признание:</strong> «У тебя была веская причина. Это имело смысл»<br/>
+        <strong>2. Контроль:</strong> «Ты главный. Мы никуда без твоего разрешения»<br/>
+        <strong>3. Надежда:</strong> «Если мы исцелим того, кого ты защищаешь — станет ли тебе легче?»
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dim-divider"><div class="dim-divider-inner"><div class="div-line-left"></div><div class="div-icon">✦</div><div class="div-line-right"></div></div></div>
+
+<!-- DIMENSION 5: Состояние ведущего -->
+<div class="dimension">
+  <div class="dim-label">05 · состояние практика в процессе обучения</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Протокол как основа</div>
+      <p>Классический IFS учит модели и шагам. Предполагается, что практик работает из Self — это постулируется, но инструменты для удержания и расширения этого состояния явно не преподаются.</p>
+      <div class="quote">«Self здесь и знает, что делать»</div>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Состояние — часть программы</div>
+      <p>Как оказаться в Self, как его замечать, как трекать себя во время сессии — это отдельная тема. Медитации в начале каждого занятия — не разминка, а обучение инструменту.</p>
+      <div class="quote">«Сначала убедись, что ты сам(а) в Self — потом начинай работу»</div>
+    </div>
+  </div>
+</div>
+
+<div class="dim-divider"><div class="dim-divider-inner"><div class="div-line-left"></div><div class="div-icon">✦</div><div class="div-line-right"></div></div></div>
+
+<!-- DIMENSION 6: Цель практики -->
+<div class="dimension">
+  <div class="dim-label">06 · что в центре практики</div>
+  <div class="dim-row">
+    <div class="dim-cell classic">
+      <div class="heading">Исцеление частей</div>
+      <p>Цель — снятие бремени. Четыре цели IFS по Шварцу: трансформация частей, доверие частей к Self, гармония системы, Self-led жизнь. Исцеление изгнанников — ядро и точка назначения.</p>
+    </div>
+    <div class="dim-cell evolving">
+      <div class="heading">Присутствие как основа</div>
+      <p>Исцеление происходит — но на фоне присутствия, а не как единственная цель. Быть с тем, что есть, уже ценно само по себе. Практик учится находиться с частями, а не только «решать» их.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────── -->
+<!-- METAPHOR BAND -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="metaphor-band">
+  <div class="metaphor-inner">
+    <div>
+      <div class="meta-tag">Метафора · Classic IFS</div>
+      <h3>Хирургия</h3>
+      <p>Точная техника, чёткий протокол, пошаговые шаги. Специалист знает, что делать. Структура — опора и безопасность. Эффективность через последовательность и точность.</p>
+    </div>
+    <div>
+      <div class="meta-tag">Метафора · Evolving IFS</div>
+      <h3>Принятие родов</h3>
+      <p>Самое важное — чтобы женщина чувствовала себя в безопасности. Не меньше внимания к процессу, но больше — к отношению, присутствию и тому, как всё происходит. Трепет рядом с техникой.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────── -->
+<!-- SHARED GROUND -->
+<!-- ─────────────────────────────────────────────── -->
+<div class="shared">
+  <div class="shared-inner">
+    <div class="tag">Общее основание · оба подхода</div>
+    <h3>Что есть в обоих — без различий</h3>
+    <div class="shared-list">
+      <div class="shared-item">Три типа частей: менеджеры, пожарные, изгнанники</div>
+      <div class="shared-item">8 C's Self (спокойствие, любопытство, ясность, сострадание…)</div>
+      <div class="shared-item">Карта бремени и снятие бремени (unburdening)</div>
+      <div class="shared-item">Протокол: разрешение защитников → изгнанник → свидетельствование → интеграция</div>
+      <div class="shared-item">Self не повреждён и доступен у каждого</div>
+      <div class="shared-item">Прямой доступ (Direct Access)</div>
+      <div class="shared-item">Self «заразен» — состояние практика влияет на клиента</div>
+      <div class="shared-item">Части желают добра — у каждой есть намерение защитить</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  На основе аналитических материалов: EVOLVING_vs_CLASSIC_IFS_ANALYSIS · COURSE_COMPARISON_FULL · POSITIONING_Classic_and_Evolving_IFS · IFS Russia · IFS Naturalistico · The Spirituality of IFS (Schwartz)
+</footer>
+
+</body>
+</html>
