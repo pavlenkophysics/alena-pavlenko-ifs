@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Алёна Павленко — навыки Self и работа с частями (IFS) — с информацией о курсе</title>
+  <title>Алёна Павленко — навыки Self и работа с частями (IFS) — вариант с иконками</title>
   <meta name="description" content="Работа с состоянием и внутренней системой. Навыки Self, части, состояние. Classic and Evolving IFS.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +29,7 @@
       --border: #e0ddd4;
       --section-gap: 5rem;
       --section-padding: 5rem 0;
+      --reveal-duration: 0.65s;
     }
 
     * {
@@ -196,7 +197,7 @@
     }
 
     .hero .intro {
-      color: #f0e8dc;
+      color: #fffaf2;
     }
 
     .hero .cta-line {
@@ -206,7 +207,7 @@
     }
     .hero .intro-sub {
       font-size: 0.9rem;
-      color: #ebe0d2;
+      color: #fcefdc;
       margin-top: 0.25rem;
       margin-bottom: 0;
     }
@@ -425,7 +426,7 @@
       background: var(--accent);
       color: #fff;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 999px;
       font-weight: 600;
       font-size: 1rem;
       transition: background 0.2s;
@@ -615,8 +616,78 @@
       margin-top: 0;
     }
 
+    .method-toggle {
+      margin: 1.5rem auto 0;
+      border: 1px solid var(--accent-soft);
+      border-radius: 12px;
+      padding: 0.6rem 0.9rem 0.85rem;
+      background: #fdfaf0;
+      max-width: 640px;
+    }
+    .method-toggle-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      list-style: none;
+      margin: 0;
+      padding-left: 0.75rem;
+      padding-right: 0.25rem;
+      border-left: 4px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .method-toggle-title::-webkit-details-marker,
+    .method-toggle-title::marker {
+      display: none;
+    }
+    .method-toggle-title .section-ico {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 1.2em;
+      height: 1.2em;
+      color: var(--accent);
+    }
+    .method-toggle-title .section-ico svg {
+      width: 100%;
+      height: 100%;
+    }
+    .method-title-text {
+      flex: 1;
+    }
+    .method-toggle-title::after {
+      content: '▸';
+      font-family: 'Source Sans 3', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 1.6rem;
+      color: var(--accent);
+      margin-left: 0.75rem;
+      line-height: 1;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background 0.2s ease-out;
+    }
+    .method-toggle[open] .method-toggle-title::after {
+      transform: rotate(90deg);
+    }
+    .method-toggle p {
+      margin: 0 0 0.75rem;
+      color: inherit;
+    }
+
     .section-method {
-      padding-top: 7rem;
+      padding-top: 5rem;
       padding-bottom: 4rem;
     }
 
@@ -638,7 +709,7 @@
       border-left-color: #f2e89e;
     }
     .section-self-state p {
-      color: #faf6e8;
+      color: #fffefc;
     }
     .section-self-state .highlight-box {
       background: rgba(0, 0, 0, 0.08);
@@ -650,7 +721,7 @@
     }
     .section-self-state .highlight-box p {
       margin: 0;
-      color: #fffef8;
+      color: #ffffff;
     }
     .section-self-state .highlight-box p + p {
       margin-top: 0.75rem;
@@ -661,6 +732,7 @@
     }
 
     .quotes blockquote {
+      opacity: 0.95;
       margin: 1.5rem 0;
       padding: 1rem 0 1rem 1.5rem;
       border-left: 4px solid var(--accent-soft);
@@ -772,6 +844,17 @@
       color: #1f261c;
     }
 
+    /* Плавное появление секций при скролле */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity var(--reveal-duration) ease-out, transform var(--reveal-duration) ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     footer {
       margin-top: 0;
       padding: 4rem 0 5rem;
@@ -867,7 +950,7 @@
 </head>
 <body>
   <main>
-    <header class="hero">
+    <header class="hero reveal">
       <div class="container">
         <div class="hero-inner">
           <div class="hero-text">
@@ -875,8 +958,8 @@
             <p class="name-line2">Работа с состоянием Self</p>
             <p class="name-line3">Classic and Evolving IFS</p>
             <p class="name-sub">Эксперт и куратор IFS Academy. PhD, 350+ часов телесной практики</p>
-            <p class="intro">Я работаю с теми, кто хочет не просто «сходить к специалисту», а научиться выстраивать контакт со своей внутренней системой, со своим состоянием и видеть полезные результаты от этих навыков в повседневной жизни.</p>
-            <p class="intro">Устойчивые навыки Self и работы с частями и состоянием: выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</p>
+            <p class="intro"><strong>Я работаю с теми, кто хочет не просто «сходить к специалисту»</strong>, а научиться выстраивать контакт со своей внутренней системой, со своим состоянием и видеть полезные результаты от этих навыков в повседневной жизни.</p>
+            <p class="intro"><strong>Устойчивые навыки Self и работы с частями и состоянием</strong>: выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</p>
             <p class="intro">Бесплатная встреча 20 минут: познакомимся, обсудим запрос и формат.</p>
             <p class="intro-sub">Напишите в Telegram — подберём время.</p>
             <a href="#zapis" class="btn">Написать в Telegram</a>
@@ -888,38 +971,43 @@
       </div>
     </header>
 
-    <section class="section-alt" id="zaprosy">
+    <section class="section-alt reveal" id="zaprosy">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg></span>Для кого</h2>
         <ul class="bullets">
-          <li>В терапии много лет, медитирую — а в жизнь не всегда переносится: понимания много, практических изменений мало, бывает, застреваю в голове.</li>
-          <li>Хочется меньше реактивности, вроде получается — и в какой-то момент снова срабатывает по-старому.</li>
-          <li>С гневом скорее подавляю, чем выражаю. Хочется выстроить с ним устойчивый контакт: не подавлять и не срываться.</li>
-          <li>Внутри голос, который всех «чинит» или вечно недоволен — хочется жить с этим иначе, не через борьбу.</li>
-          <li>На работе и в переговорах бывает, теряю опору или долго отхожу — хочется сохранять контакт с собой и ясность.</li>
+          <li>Есть опыт терапии и медитации, но в жизнь это не всегда переносится: понимания много, а практических изменений мало, и внимание снова уходит в голову.</li>
+          <li>Хочется меньше реагировать на автомате: иногда это получается, а в какой‑то момент всё равно срабатывают старые паттерны.</li>
+          <li>С гневом непросто: чаще он сдерживается, чем выражается. Важно найти с ним такой контакт, в котором он замечен, но не захватывает.</li>
+          <li>Внутри звучит голос, который всех «чинит» или вечно недоволен; хочется жить с ним не через борьбу и самокритику.</li>
+          <li>В работе и переговорах бывает, что теряется опора или долго приходится отходить после сложных разговоров; хочется сохранять контакт с собой и ясность.</li>
         </ul>
       </div>
     </section>
 
-    <section class="section-self-state" id="self-state">
+    <section class="section-self-state reveal" id="self-state">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg></span>Self, состояние и навык</h2>
-        <p><strong>Self</strong> в IFS — это состояние, из которого возможны любопытство, спокойствие, принятие. Моя задача — помочь вам выстроить контакт с Self и сделать работу с частями и состоянием вашим навыком. Вы учитесь замечать части, входить с ними в контакт, выстраивать отношения, а также работать с состоянием и телесными ощущениями (напряжение, тяжесть, сжатие, вялость). Умение возвращаться в опору и слышать себя становится тем, чем вы безусильно пользуетесь самостоятельно в повседневной жизни.</p>
+        <p><strong>Self</strong> в IFS — это состояние, из которого возможны любопытство, спокойствие, принятие. Моя задача — помочь вам выстроить <strong>контакт с Self</strong> и сделать <strong>работу с частями и состоянием вашим навыком</strong>. Вы учитесь замечать части, входить с ними в контакт, выстраивать отношения, а также работать с состоянием и телесными ощущениями (напряжение, тяжесть, сжатие, вялость). <strong>Умение возвращаться в опору и слышать себя</strong> становится тем, чем вы безусильно пользуетесь самостоятельно в повседневной жизни.</p>
         <div class="highlight-box">
           <p><strong>На сессиях</strong> мы и знакомимся с частями, и целенаправленно работаем с состоянием: замечать, что с вами происходит, опираться на тело и дыхание, возвращаться в ресурс. Цель — чтобы со временем вы делали это сами в повседневной жизни, включая острые эмоциональные ситуации.</p>
         </div>
       </div>
     </section>
 
-    <section class="container method section-method" id="method">
-      <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg></span>Метод: IFS и Evolving IFS</h2>
-      <h3>Что такое IFS</h3>
-      <p>В IFS (Internal Family Systems) паттерны, установки, внутренние голоса рассматриваются как <strong>части</strong> — с ними можно выстраивать отношения. У каждой части благое намерение, каждая по-своему защищает. В центре метода — <strong>Self</strong>: состояние присутствия и принятия, из которого возможен контакт с частями. Метод даёт снять внутреннее напряжение и выстроить навык: замечать части, выстраивать с ними отношения, двигаться к большей целостности. Исследования показывают эффективность в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
-      <h3>Evolving IFS</h3>
-      <p>Evolving IFS включает в себя классический IFS и добавляет упор на <strong>доверительное пространство</strong>, контакт и присутствие. В начале сессии — сонастройка, работа с состоянием и телом. Вы получаете опыт быть увиденным, услышанным и принятым — и на этом строятся устойчивость и способность опираться на себя.</p>
+    <section class="container method section-method reveal" id="method">
+      <details class="method-toggle">
+        <summary class="method-toggle-title">
+          <span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.75 6.75c2.25-1.3 4.5-1.3 6.75 0v10.5c-2.25-1.3-4.5-1.3-6.75 0V6.75Zm6.75 0c2.25-1.3 4.5-1.3 6.75 0v10.5c-2.25-1.3-4.5-1.3-6.75 0V6.75Z" /></svg></span>
+          <span class="method-title-text">Что такое IFS (Classic и Evolving)</span>
+        </summary>
+        <h3>Что такое IFS</h3>
+        <p>В IFS (Internal Family Systems) паттерны, установки, внутренние голоса рассматриваются как <strong>части</strong> — с ними можно выстраивать отношения. У каждой части благое намерение, каждая по-своему защищает. В центре метода — <strong>Self</strong>: состояние присутствия и принятия, из которого возможен контакт с частями. Метод даёт снять внутреннее напряжение и выстроить навык: замечать части, выстраивать с ними отношения, двигаться к большей целостности. Исследования показывают эффективность в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
+        <h3>Evolving IFS</h3>
+        <p>Evolving IFS включает в себя классический IFS и добавляет упор на <strong>доверительное пространство</strong>, контакт и присутствие. В начале сессии — сонастройка, работа с состоянием и телом. Вы получаете опыт быть увиденным, услышанным и принятым — и на этом строятся устойчивость и способность опираться на себя.</p>
+      </details>
     </section>
 
-    <section class="section-alt" id="session">
+    <section class="section-alt reveal" id="session">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" /></svg></span>Как проходит сессия</h2>
         <ul class="bullets">
@@ -931,7 +1019,7 @@
       </div>
     </section>
 
-    <section class="section-quotes" id="reviews">
+    <section class="section-quotes reveal" id="reviews">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg></span>Что говорят люди, которые внедрили IFS в свою жизнь</h2>
         <div class="quotes-subsections">
@@ -942,7 +1030,6 @@
             </summary>
             <div class="quotes">
               <blockquote>«Для меня это как будто новый уровень осознанности, новый слой открывается. Когда в моменте осознаешь часть, которая тебя захватывает, ты можешь с ней разъединиться, и тогда появляется больше ясности.»</blockquote>
-              <blockquote>«Раньше был очень сильный обвинитель и палач, он видел части через призму "всех надо починить". А сейчас возникло восхищение частями. "А что, так можно было?"»</blockquote>
               <blockquote>«Стало меньше реактивной реакции. Вместо того чтобы действовать как хочет протектор, я замедляюсь, даю ему пространство внутри позлиться, и только потом начинаю что-то делать. В итоге вместо большой ссоры с мужем на неделю получился живой и классный диалог.»</blockquote>
               <blockquote>«Больше появилось сострадания к своим частям, соответственно, и к другим людям тоже. Это меняет отношения с близкими.»</blockquote>
             </div>
@@ -962,11 +1049,11 @@
       </div>
     </section>
 
-    <section class="section-alt" id="first-step">
+    <section class="section-alt reveal" id="first-step">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg></span>Форматы работы</h2>
         <div class="intro-meeting">
-          <p><strong>Встреча-знакомство</strong> — 20 минут, бесплатно. На ней вы сможете задать любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом. Решим вместе, в каком формате двигаться дальше.</p>
+          <p><strong>Встреча-знакомство</strong> — 20 минут, бесплатно. На ней вы сможете задать любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом, а также понять, подходит ли вам такой формат работы сейчас.</p>
         </div>
         <div class="formats">
           <dl>
@@ -976,8 +1063,6 @@
             <dd>Поддержка под вашу задачу: познакомиться со своей системой частей и состоянием, начать делать это своим навыком.</dd>
             <dt>Два месяца — 8 встреч по 1 ч, 500 €</dt>
             <dd>Для тех, кто хочет двигаться в эту сторону: устойчивые навыки Self и работы с частями и состоянием, выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</dd>
-            <dt>Практическая группа «IFS как лайфстайл» — 6 недель, 300 €</dt>
-            <dd>Практическая группа для знакомства с IFS как методом работы с собой и интеграции его в жизнь. 12 встреч (два раза в неделю): теория с демо и практика в парах, группа до 14 человек. Для тех, кто уже слышал или читал про IFS и хочет начать опираться на него в повседневных ситуациях. <a href="https://pavlenkophysics.github.io/ifs-for-life/" target="_blank" rel="noopener">Подробная программа и запись в вейтлист →</a></dd>
           </dl>
           <p class="prices-note">Возможна оплата в рублях и криптовалюте.</p>
         </div>
@@ -985,7 +1070,7 @@
       </div>
     </section>
 
-    <section class="section-about" id="about">
+    <section class="section-about reveal" id="about">
       <div class="container">
         <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></span>Мой путь</h2>
         <p style="margin-bottom: 1.5rem;">Карьера до практики, как пришла к IFS и телесной работе, у кого училась и чем занимаюсь сейчас.</p>
@@ -1025,6 +1110,33 @@
         </div>
       </div>
     </section>
-  </main>
+</main>
+<script>
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        el.classList.add('visible');
+      });
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0 }
+    );
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      observer.observe(el);
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('visible');
+      }
+    });
+  })();
+</script>
 </body>
 </html>
