@@ -1,1142 +1,957 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Алёна Павленко — навыки Self и работа с частями (IFS) — вариант с иконками</title>
-  <meta name="description" content="Работа с состоянием и внутренней системой. Навыки Self, части, состояние. Classic and Evolving IFS.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f7f5f0;
-      --bg-alt: #fffcf7;
-      --bg-beige: #f0ebe2;
-      --bg-dark: #2d3d28;
-      --bg-dark-soft: #3d5038;
-      --text: #2c3028;
-      --text-inverse: #f7f5f0;
-      --muted: #5a6354;
-      --muted-inverse: #b8c9b0;
-      --accent: #6b9e5a;
-      --accent-hover: #5a8c4a;
-      --accent-soft: #b8d4a8;
-      --accent-2: #f2e89e;
-      --accent-2-hover: #e8de7a;
-      --accent-2-soft: #faf6dc;
-      --accent-line: #6b9e5a;
-      --border: #e0ddd4;
-      --section-gap: 5rem;
-      --section-padding: 5rem 0;
-      --reveal-duration: 0.65s;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: var(--text);
-      background: var(--bg);
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      margin: 0 0 1rem;
-    }
-
-    h2 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      margin: 0 0 1.5rem;
-      color: var(--text);
-      position: relative;
-      padding-left: 1rem;
-      border-left: 4px solid var(--accent);
-    }
-
-    /* Заголовки секций с иконками */
-    h2.section-title-ico {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding-left: 0;
-      border-left: none;
-      padding-left: 0.5rem;
-      border-left: 4px solid var(--accent);
-    }
-    h2.section-title-ico .section-ico {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 1.5rem;
-      color: var(--accent);
-    }
-    h2.section-title-ico .section-ico svg {
-      width: 100%;
-      height: 100%;
-    }
-    .section-self-state h2.section-title-ico .section-ico,
-    .section-quotes h2.section-title-ico .section-ico {
-      color: #f2e89e;
-    }
-    .section-self-state h2.section-title-ico,
-    .section-quotes h2.section-title-ico {
-      border-left-color: #f2e89e;
-    }
-
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* ——— HERO ——— */
-    .hero {
-      min-height: 65vh;
-      display: flex;
-      align-items: center;
-      padding: 5rem 0;
-      background: var(--bg-dark);
-      color: var(--text-inverse);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 60%;
-      height: 200%;
-      background: radial-gradient(ellipse at center, rgba(107, 158, 90, 0.14) 0%, rgba(242, 232, 158, 0.16) 50%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero .container {
-      position: relative;
-      z-index: 1;
-      max-width: 640px;
-    }
-    @media (min-width: 900px) {
-      .hero .container {
-        max-width: 880px;
-      }
-    }
-
-    .hero h2,
-    .hero .name,
-    .hero .intro {
-      color: #fffef5;
-    }
-
-    .hero-inner {
-      display: grid;
-      gap: 2rem;
-      align-items: center;
-    }
-    @media (min-width: 700px) {
-      .hero-inner {
-        grid-template-columns: 1fr 228px;
-        gap: 3rem;
-      }
-    }
-
-    .hero-text p {
-      margin: 0 0 1.25rem;
-      font-size: 1.1rem;
-      line-height: 1.65;
-    }
-
-    .hero-text p:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .hero .name {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.85rem, 4.5vw, 2.4rem);
-      font-weight: 600;
-      color: #fffef5;
-      margin-bottom: 0.25rem;
-    }
-
-    .hero .name-line2,
-    .hero .name-line3 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.1rem, 2.2vw, 1.35rem);
-      font-weight: 600;
-      color: #fffef5;
-      margin: 0 0 0.2rem;
-    }
-
-    .hero .name-line3 {
-      margin-bottom: 0.35rem;
-    }
-
-    .hero .name-sub {
-      font-size: 0.9rem;
-      color: #f5efe6;
-      margin: 0 0 1rem;
-      font-weight: 400;
-    }
-
-    .hero .intro {
-      color: #fffaf2;
-    }
-
-    .hero .cta-line {
-      margin-top: 1.75rem;
-      color: #f5efe6;
-      font-size: 0.95rem;
-    }
-    .hero .intro-sub {
-      font-size: 0.9rem;
-      color: #fcefdc;
-      margin-top: 0.25rem;
-      margin-bottom: 0;
-    }
-
-    .hero .photo-wrap {
-      order: -1;
-      margin: 0 auto;
-      position: relative;
-      width: 196px;
-      height: 196px;
-      border-radius: 50%;
-    }
-    /* Внешнее кольцо — зелёный градиент по кругу */
-    .hero .photo-wrap::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
-      z-index: 0;
-    }
-    /* Внутреннее кольцо — тёплые тона (беж, крем), градиент по кругу */
-    .hero .photo-wrap::before {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 188px;
-      height: 188px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
-      z-index: 1;
-    }
-    @media (min-width: 700px) {
-      .hero .photo-wrap {
-        order: 0;
-        margin: 0;
-        width: 228px;
-        height: 228px;
-      }
-      .hero .photo-wrap::before {
-        top: 4px;
-        left: 4px;
-        width: 220px;
-        height: 220px;
-      }
-    }
-    .hero .photo-wrap .hero-photo-inner {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      overflow: hidden;
-      z-index: 2;
-    }
-    @media (min-width: 700px) {
-      .hero .photo-wrap .hero-photo-inner {
-        top: 8px;
-        left: 8px;
-        width: 212px;
-        height: 212px;
-      }
-    }
-
-    .photo-wrap {
-      border-radius: 50%;
-    }
-    .section-with-photo .photo-wrap {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 3px solid var(--accent);
-    }
-
-    .hero .photo-wrap .hero-photo-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transform: scaleX(-1) scale(1.3);
-    }
-
-    .section-with-photo {
-      display: grid;
-      gap: 2rem;
-      align-items: start;
-    }
-    @media (min-width: 700px) {
-      .section-with-photo {
-        grid-template-columns: 180px 1fr;
-        gap: 2.5rem;
-      }
-    }
-
-    .section-with-photo .photo-wrap img {
-      width: 100%;
-      max-width: 180px;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border-radius: 9px;
-      display: block;
-    }
-
-    /* ——— Секция «Мой путь» ——— */
-    .section-about {
-      padding-top: 7rem;
-      padding-bottom: 5rem;
-      border-top: 4px solid var(--accent);
-    }
-    .section-about .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .about-top {
-      display: grid;
-      gap: 2rem;
-      align-items: start;
-    }
-    @media (min-width: 700px) {
-      .about-top {
-        grid-template-columns: 180px 1fr;
-        gap: 2.5rem;
-      }
-    }
-    .about-top .photo-wrap {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      margin-top: 2rem;
-    }
-    @media (min-width: 700px) {
-      .about-top .photo-wrap {
-        margin-top: 2.1rem;
-      }
-    }
-    .about-top .photo-wrap::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
-      z-index: 0;
-    }
-    .about-top .photo-wrap::before {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 172px;
-      height: 172px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
-      z-index: 1;
-    }
-    .about-top .photo-wrap .about-photo-inner {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      width: 164px;
-      height: 164px;
-      border-radius: 50%;
-      overflow: hidden;
-      z-index: 2;
-    }
-    .about-top .photo-wrap .about-photo-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .about-rest {
-      margin-top: 2.5rem;
-    }
-    .section-about .about-text p {
-      margin-bottom: 1.75rem;
-      padding: 1.25rem 1.25rem 1.25rem 1.5rem;
-      background: var(--bg-alt);
-      border-radius: 8px;
-      border-left: 4px solid var(--accent-soft);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .section-about .about-text p:last-child {
-      margin-bottom: 0;
-    }
-
-    .section-about .about-text p.about-block-label {
-      background: none;
-      padding: 0;
-      margin: 1.75rem 0 0.5rem;
-      border: none;
-      box-shadow: none;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .section-about .about-text p.about-block-label:first-of-type {
-      margin-top: 0;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--accent);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: background 0.2s;
-    }
-
-    .btn:hover {
-      background: var(--accent-hover);
-    }
-
-    .hero .btn {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(107, 158, 90, 0.4);
-    }
-    .hero .btn:hover {
-      background: var(--accent-hover);
-      box-shadow: 0 4px 18px rgba(107, 158, 90, 0.5);
-    }
-
-    section {
-      padding: var(--section-padding);
-      margin-top: 0;
-      border-top: none;
-    }
-    section:first-of-type {
-      margin-top: 0;
-    }
-
-    section.section-alt {
-      background: var(--bg-alt);
-      margin-left: 0;
-      margin-right: 0;
-      padding-left: 0;
-      padding-right: 0;
-      box-shadow: 0 -1px 0 var(--border);
-    }
-    section.section-alt .container {
-      max-width: 640px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-
-    section.section-quotes {
-      background: var(--bg-dark-soft);
-      color: var(--text-inverse);
-      margin-left: 0;
-      margin-right: 0;
-      padding-left: 0;
-      padding-right: 0;
-    }
-    section.section-quotes .container {
-      max-width: 640px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-    section.section-quotes h2 {
-      color: var(--text-inverse);
-      border-left-color: var(--accent-soft);
-    }
-    section.section-quotes blockquote {
-      color: var(--text-inverse);
-      border-left-color: var(--accent);
-    }
-    .quotes-subsections {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .quotes-subsection {
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .quotes-subsection-title {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.95);
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 1rem 1.25rem;
-      list-style: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      background: rgba(0, 0, 0, 0.1);
-      transition: background 0.2s;
-    }
-    .quotes-subsection-title::-webkit-details-marker,
-    .quotes-subsection-title::marker {
-      display: none;
-    }
-    .quotes-subsection-title:hover {
-      background: rgba(0, 0, 0, 0.18);
-    }
-    .quotes-toggle-icon {
-      flex-shrink: 0;
-      width: 1.25rem;
-      height: 1.25rem;
-      border-right: 2px solid currentColor;
-      border-bottom: 2px solid currentColor;
-      transform: rotate(45deg);
-      margin-top: -0.25rem;
-      transition: transform 0.2s;
-    }
-    .quotes-subsection[open] .quotes-toggle-icon {
-      transform: rotate(-135deg);
-      margin-top: 0.35rem;
-    }
-    .quotes-subsection .quotes {
-      padding: 0 1.25rem 1.25rem;
-    }
-    .quotes-subsection .quotes blockquote:first-child {
-      margin-top: 1rem;
-    }
-
-    section.section-cta {
-      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
-      margin-left: 0;
-      margin-right: 0;
-      padding-left: 0;
-      padding-right: 0;
-      border-top: 4px solid var(--accent);
-    }
-    section.section-cta .container {
-      max-width: 640px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-
-    section p {
-      margin: 0 0 1rem;
-    }
-
-    section p:last-child {
-      margin-bottom: 0;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    ul.bullets {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem;
-    }
-
-    ul.bullets li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    ul.bullets li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.5em;
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 2px;
-      transform: rotate(45deg);
-    }
-
-    .method h3 {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin: 1.5rem 0 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .method h3:first-child {
-      margin-top: 0;
-    }
-
-    .method-toggle {
-      margin: 1.5rem auto 0;
-      border: 1px solid var(--accent-soft);
-      border-radius: 12px;
-      padding: 0.6rem 0.9rem 0.85rem;
-      background: #fdfaf0;
-      max-width: 640px;
-    }
-    .method-toggle-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      list-style: none;
-      margin: 0;
-      padding-left: 0.75rem;
-      padding-right: 0.25rem;
-      border-left: 4px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-    .method-toggle-title::-webkit-details-marker,
-    .method-toggle-title::marker {
-      display: none;
-    }
-    .method-toggle-title .section-ico {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      width: 1.2em;
-      height: 1.2em;
-      color: var(--accent);
-    }
-    .method-toggle-title .section-ico svg {
-      width: 100%;
-      height: 100%;
-    }
-    .method-title-text {
-      flex: 1;
-    }
-    .method-toggle-title::after {
-      content: '▸';
-      font-family: 'Source Sans 3', sans-serif;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.2rem;
-      height: 2.2rem;
-      font-size: 1.6rem;
-      color: var(--accent);
-      margin-left: 0.75rem;
-      line-height: 1;
-      border-radius: 999px;
-      border: 2px solid var(--accent);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background 0.2s ease-out;
-    }
-    .method-toggle[open] .method-toggle-title::after {
-      transform: rotate(90deg);
-    }
-    .method-toggle p {
-      margin: 0 0 0.75rem;
-      color: inherit;
-    }
-
-    .section-method {
-      padding-top: 5rem;
-      padding-bottom: 4rem;
-    }
-
-    /* Блок Self и состояние — тёмно-зелёный фон, текст ещё светлее */
-    .section-self-state {
-      background: var(--bg-dark-soft);
-      color: #fffef8;
-      padding-top: 5rem;
-      padding-bottom: 5rem;
-      box-shadow: 0 -1px 0 rgba(255,255,255,0.08);
-    }
-    .section-self-state .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .section-self-state h2 {
-      color: #fffef8;
-      border-left-color: #f2e89e;
-    }
-    .section-self-state p {
-      color: #fffefc;
-    }
-    .section-self-state .highlight-box {
-      background: rgba(0, 0, 0, 0.08);
-      border-left-color: #f2e89e;
-      padding: 1.5rem 1.5rem 1.5rem 1.75rem;
-      border-radius: 10px;
-      border-left: 4px solid #f2e89e;
-      margin: 1.5rem 0 0;
-    }
-    .section-self-state .highlight-box p {
-      margin: 0;
-      color: #ffffff;
-    }
-    .section-self-state .highlight-box p + p {
-      margin-top: 0.75rem;
-    }
-
-    .quotes {
-      margin: 0;
-    }
-
-    .quotes blockquote {
-      opacity: 0.95;
-      margin: 1.5rem 0;
-      padding: 1rem 0 1rem 1.5rem;
-      border-left: 4px solid var(--accent-soft);
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--text);
-    }
-
-    .quotes blockquote:first-child {
-      margin-top: 0;
-    }
-
-    .intro-meeting {
-      background: #fdf6e3;
-      padding: 1.25rem 1.25rem 1.25rem 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-    }
-    .intro-meeting p {
-      margin: 0;
-    }
-
-    .formats dl {
-      margin: 1rem 0 0;
-    }
-
-    .formats dt {
-      font-weight: 700;
-      margin-top: 0;
-      margin-bottom: 0.25rem;
-      padding: 1.25rem 0 0;
-      padding-left: 1.25rem;
-      position: relative;
-      color: var(--text);
-      font-size: 1.05rem;
-    }
-    .formats dt::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.55em;
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 2px;
-      transform: rotate(45deg);
-    }
-
-    .formats dt:first-child {
-      padding-top: 0;
-    }
-    .formats dt:not(:first-child)::before {
-      top: calc(1.25rem + 0.55em);
-    }
-
-    .formats dt + dd {
-      margin-top: 0;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .formats dt:not(:first-child) {
-      margin-top: 1.25rem;
-    }
-
-    .formats dd {
-      margin: 0;
-      padding-left: 1.25rem;
-      padding-top: 0.25rem;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .formats dl dd:last-of-type {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .formats .prices-note {
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .cta-block {
-      background: var(--bg-dark);
-      color: var(--text-inverse);
-      padding: 2rem;
-      border-radius: 12px;
-      margin-top: 2rem;
-      border: 2px solid var(--accent);
-    }
-
-    .cta-block p {
-      margin: 0 0 0.5rem;
-      color: var(--muted-inverse);
-    }
-
-    .cta-block .btn {
-      margin-top: 0.75rem;
-      background: var(--accent-2);
-      color: #2c3028;
-    }
-    .cta-block .btn:hover {
-      background: var(--accent-2-hover);
-      color: #1f261c;
-    }
-
-    /* Плавное появление секций при скролле */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity var(--reveal-duration) ease-out, transform var(--reveal-duration) ease-out;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    footer {
-      margin-top: 0;
-      padding: 4rem 0 5rem;
-      border-top: 4px solid var(--accent);
-      font-size: 0.9rem;
-      color: var(--muted);
-      background: var(--bg-alt);
-    }
-
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-links {
-      margin-top: 1rem;
-    }
-
-    .footer-links a {
-      margin-right: 1rem;
-    }
-
-    .cta-inner {
-      display: grid;
-      gap: 1.5rem;
-      align-items: center;
-    }
-    @media (min-width: 520px) {
-      .cta-inner {
-        grid-template-columns: 1fr 140px;
-      }
-    }
-    .cta-photo {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-    }
-    .cta-photo::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #5a8c4a, #6b9e5a, #7cb069, #5a8c4a);
-      z-index: 0;
-    }
-    .cta-photo::before {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 132px;
-      height: 132px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #f0e8dc, #e8dfd0, #f5efe6, #ebe0d2);
-      z-index: 1;
-    }
-    .cta-photo .cta-photo-inner {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      width: 124px;
-      height: 124px;
-      border-radius: 50%;
-      overflow: hidden;
-      z-index: 2;
-    }
-    .cta-photo .cta-photo-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .cta-content h2 { margin-top: 0; }
-    .cta-content .btn {
-      margin-top: 0.75rem;
-      background: var(--accent);
-      color: #fff;
-    }
-    .cta-content .btn:hover {
-      background: var(--accent-hover);
-      color: #fff;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Алёна Павленко — навыки Self и работа с частями (IFS)</title>
+<meta name="description" content="Работа с состоянием и внутренней системой. Навыки Self, части, состояние. Classic and Evolving IFS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --green: #4a5e3c;
+  --green-dark: #3a4a2e;
+  --green-hero: #3d5030;
+  --sage: #7a8e6a;
+  --sage-light: #a3b294;
+  --cream: #f7f2e6;
+  --cream-warm: #f0e6cc;
+  --text: #2d2d2d;
+  --text-soft: #484848;
+  --white: #fff;
+  --amber: #c49a3c;
+  --amber-light: #e0c78a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--cream);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+/* ═══════════════════════════
+   HERO
+   ═══════════════════════════ */
+.hero {
+  background: var(--green-hero);
+  color: var(--white);
+  padding: 5rem 2rem 4.5rem;
+}
+
+.hero-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.hero h1 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+  color: var(--white);
+}
+
+.hero .tagline {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 0.15rem;
+}
+
+.hero .tagline-sub {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.8rem;
+}
+
+.hero .credentials {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 2.2rem;
+  letter-spacing: 0.01em;
+}
+
+.hero .lead {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 1.6rem;
+}
+
+.hero .lead strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+.hero .mission {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 2rem;
+}
+
+.hero .mission strong {
+  color: rgba(255,255,255,0.95);
+  font-weight: 600;
+}
+
+.hero .free-note {
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+  font-weight: 400;
+}
+
+.hero .free-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 1.8rem;
+}
+
+.photo-circle {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--sage);
+  box-shadow: 0 0 0 10px rgba(122,142,106,0.12);
+  margin-top: 1rem;
+  flex-shrink: 0;
+}
+
+.photo-circle img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.btn-tg {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  background: var(--sage);
+  color: var(--white);
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background 0.3s;
+}
+
+.btn-tg:hover { background: #8fa07e; box-shadow: 0 2px 12px rgba(196,154,60,0.2); }
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.85rem 0;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.btn-secondary:hover {
+  color: var(--white);
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* ═══════════════════════════
+   LIGHT SECTIONS
+   ═══════════════════════════ */
+.section-light {
+  background: var(--cream);
+  padding: 4rem 2rem;
+}
+
+.section-warm {
+  background: var(--cream-warm);
+  padding: 4rem 2rem;
+}
+
+.section-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════
+   SECTION HEADERS
+   ═══════════════════════════ */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.8rem;
+}
+
+.section-head .bar {
+  width: 3px;
+  height: 2rem;
+  background: var(--sage);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.section-head h2 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+/* ═══════════════════════════
+   BULLET LISTS (diamond style)
+   ═══════════════════════════ */
+.diamond-list, .steps, .format-list {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+.diamond-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.diamond-list li {
+  padding: 0.9rem 1.3rem 0.9rem 2.3rem;
+  position: relative;
+  font-size: 0.93rem;
+  color: var(--text-soft);
+  line-height: 1.7;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.diamond-list li::before {
+  content: '';
+  position: absolute;
+  left: 0.95rem;
+  top: 1.25rem;
+  width: 6px; height: 6px;
+  background: var(--amber);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+/* ═══════════════════════════
+   DARK GREEN SECTIONS
+   ═══════════════════════════ */
+.section-dark {
+  background: var(--green-hero);
+  color: var(--white);
+  padding: 4rem 2rem;
+}
+
+.section-dark .section-head .bar { background: var(--sage-light); }
+.section-dark .section-head h2 { color: var(--white); }
+.section-dark .section-head .icon { color: var(--sage-light); }
+
+.section-dark p {
+  color: rgba(255,255,255,0.9);
+}
+
+.section-dark strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════
+   SELF SECTION
+   ═══════════════════════════ */
+.self-text p {
+  font-size: 0.97rem;
+  line-height: 1.85;
+  color: var(--text-soft);
+  margin-bottom: 1.3rem;
+}
+
+.self-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.callout {
+  background: var(--green-dark);
+  color: var(--cream);
+  padding: 1.8rem 2rem;
+  border-radius: 12px;
+  border-left: 3.5px solid var(--amber-light);
+  margin-top: 1.8rem;
+  font-size: 0.93rem;
+  line-height: 1.85;
+  font-style: italic;
+}
+
+.callout strong {
+  color: var(--amber-light);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════
+   IFS EXPANDABLE
+   ═══════════════════════════ */
+.expandable {
+  background: var(--white);
+  border-radius: 12px;
+  margin-top: 2.2rem;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+
+.expandable-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.expandable-toggle:hover { background: rgba(196,154,60,0.04); }
+
+.expandable-toggle .arrow {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--amber);
+  font-size: 0.75rem;
+  transition: transform 0.35s;
+  flex-shrink: 0;
+}
+
+.expandable-toggle.open .arrow { transform: rotate(180deg); }
+
+.expandable-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+}
+
+.expandable-body-inner {
+  padding: 0 1.5rem 1.5rem;
+  font-size: 0.93rem;
+  color: var(--text-soft);
+  line-height: 1.85;
+}
+
+.expandable-body-inner h4 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  margin: 1.3rem 0 0.6rem;
+}
+
+.expandable-body-inner h4:first-child { margin-top: 0; }
+
+.expandable-body-inner p {
+  margin-bottom: 0.7rem;
+}
+
+/* ═══════════════════════════
+   SESSION STEPS
+   ═══════════════════════════ */
+.steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  margin-top: 0.5rem;
+}
+
+.steps li {
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  line-height: 1.75;
+}
+
+.steps li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 7px; height: 7px;
+  background: var(--amber);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+.steps li strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pace-note {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* ═══════════════════════════
+   TESTIMONIALS
+   ═══════════════════════════ */
+.testimonial-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.t-tab {
+  padding: 0.55rem 1.2rem;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 50px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.t-tab.active, .t-tab:hover {
+  background: rgba(196,154,60,0.15);
+  border-color: var(--amber-light);
+  color: var(--white);
+}
+
+.t-group { display: none; }
+.t-group.active { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.t-card {
+  padding: 1.5rem 1.8rem;
+  border-left: 3px solid var(--amber-light);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.88);
+}
+
+/* ═══════════════════════════
+   FORMATS
+   ═══════════════════════════ */
+.format-free {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  border-left: 3.5px solid var(--amber);
+}
+
+.format-free h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.format-free p {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.format-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.format-list li {
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.format-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.55rem;
+  width: 7px; height: 7px;
+  background: var(--amber);
+  border-radius: 50%;
+}
+
+.format-list li strong {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.97rem;
+}
+
+.format-list li .desc {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  margin-top: 0.25rem;
+}
+
+.format-note {
+  font-size: 0.83rem;
+  color: var(--text-soft);
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 2rem;
+}
+
+/* ═══════════════════════════
+   MY PATH
+   ═══════════════════════════ */
+.path-intro {
+  font-size: 0.93rem;
+  color: var(--text-soft);
+  margin-bottom: 2.2rem;
+}
+
+.path-block {
+  margin-bottom: 1.5rem;
+  background: var(--white);
+  padding: 1.5rem 1.8rem;
+  border-radius: 12px;
+  border-left: 3px solid var(--amber-light);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+}
+
+.path-label {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.path-block p {
+  font-size: 0.93rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.path-block strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.path-photo-standalone {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.path-photo {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid var(--sage);
+  box-shadow: 0 0 0 8px rgba(122,142,106,0.08);
+}
+
+.path-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.path-values {
+  background: var(--green-dark);
+  color: var(--cream);
+  padding: 1.8rem 2rem;
+  border-radius: 12px;
+  border-left: 3.5px solid var(--amber);
+  margin-top: 0.2rem;
+  font-size: 0.93rem;
+  line-height: 1.8;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+}
+
+.path-values .path-label { color: var(--white); }
+.path-values strong { color: var(--white); font-weight: 600; }
+
+/* ═══════════════════════════
+   DIVIDER
+   ═══════════════════════════ */
+.divider {
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--sage), var(--amber-light), var(--sage));
+  max-width: 100%;
+  opacity: 0.35;
+}
+
+/* ═══════════════════════════
+   FINAL CTA
+   ═══════════════════════════ */
+.cta-section {
+  background: var(--cream);
+  padding: 4rem 2rem;
+}
+
+.cta-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.cta-inner h2 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cta-inner h2 .bar {
+  width: 3px; height: 1.8rem;
+  background: var(--sage);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.cta-inner p {
+  font-size: 0.93rem;
+  color: var(--text-soft);
+  margin-bottom: 1.5rem;
+  line-height: 1.75;
+}
+
+.cta-photo {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--sage);
+  box-shadow: 0 0 0 8px rgba(122,142,106,0.08);
+}
+
+.cta-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.cta-section .btn-tg {
+  background: var(--green);
+}
+.cta-section .btn-tg:hover {
+  background: var(--green-dark);
+}
+
+/* ═══════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════
+   RESPONSIVE
+   ═══════════════════════════ */
+@media (max-width: 700px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .photo-circle { margin: 0 auto 1.5rem; width: 200px; height: 200px; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero-cta-row { justify-content: center; }
+  .section-inner { max-width: 100%; }
+  .path-photo { margin: 0 auto; }
+  .cta-inner { grid-template-columns: 1fr; text-align: center; }
+  .cta-photo { margin: 0 auto; }
+  .testimonial-tabs { justify-content: center; }
+}
+</style>
 </head>
 <body>
-  <main>
-    <header class="hero reveal">
-      <div class="container">
-        <div class="hero-inner">
-          <div class="hero-text">
-            <p class="name">Алёна Павленко</p>
-            <p class="name-line2">Работа с состоянием Self</p>
-            <p class="name-line3">Classic and Evolving IFS</p>
-            <p class="name-sub">Эксперт и куратор IFS Academy. PhD, 350+ часов телесной практики</p>
-            <p class="intro"><strong>Я работаю с теми, кто хочет не просто «сходить к специалисту»</strong>, а научиться выстраивать контакт со своей внутренней системой, со своим состоянием и видеть полезные результаты от этих навыков в повседневной жизни.</p>
-            <p class="intro"><strong>Устойчивые навыки Self и работы с частями и состоянием</strong>: выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</p>
-            <p class="intro">Бесплатная встреча 20 минут: познакомимся, обсудим запрос и формат.</p>
-            <p class="intro-sub">Напишите в Telegram — подберём время.</p>
-            <a href="#zapis" class="btn">Написать в Telegram</a>
-          </div>
-          <div class="photo-wrap">
-            <span class="hero-photo-inner"><img src="images/DSCF3599-cropped.jpg" alt="Алёна Павленко" width="200" height="200"></span>
-          </div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1 class="reveal">Алёна Павленко</h1>
+      <p class="tagline reveal">Помогаю, когда понимание себя уже есть, а привычные реакции всё равно берут верх</p>
+      <p class="tagline-sub reveal">Практик IFS · PhD</p>
+      <p class="credentials reveal">Эксперт и куратор IFS Academy · 350+ часов телесной практики</p>
+
+      <p class="lead reveal">
+        <strong>У каждого из нас есть привычные реакции</strong>, которые управляют жизнью — внутренний критик, стремление всем угодить, замирание под давлением. На индивидуальных сессиях я помогаю научиться их замечать, понимать и отвечать из более спокойного и ясного места.
+      </p>
+
+      <p class="mission reveal">
+        <strong>Это практический навык, а не бесконечная терапия.</strong> Через IFS — метод, в котором вы выстраиваете отношения с разными сторонами себя — вы учитесь сохранять внутреннюю опору и переносить это в повседневную жизнь самостоятельно.
+      </p>
+
+      <p class="free-note reveal">Бесплатная встреча 20 минут: познакомимся, обсудим запрос и формат.</p>
+      <p class="free-sub reveal">Напишите в Telegram — подберём время.</p>
+      <div class="hero-cta-row reveal">
+        <a href="#zapis" class="btn-tg">Написать в Telegram</a>
+        <a href="#first-step" class="btn-secondary">Форматы и стоимость</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:start;justify-content:center;padding-top:0.5rem;">
+      <div class="photo-circle reveal">
+        <img src="images/DSCF3599-cropped.jpg" alt="Алёна Павленко">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ДЛЯ КОГО ══════ -->
+<section class="section-light" id="zaprosy">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Для кого</h2>
+    </div>
+    <ul class="diamond-list">
+      <li class="reveal">Есть опыт терапии и медитации, но в жизнь это не всегда переносится: понимания много, а практических изменений мало, и внимание снова уходит в голову.</li>
+      <li class="reveal">Хочется меньше реагировать на автомате: иногда это получается, а в какой‑то момент всё равно срабатывают старые паттерны.</li>
+      <li class="reveal">С гневом непросто: чаще он сдерживается, чем выражается. Важно найти с ним такой контакт, в котором он замечен, но не захватывает.</li>
+      <li class="reveal">Внутри звучит голос, который всех «чинит» или вечно недоволен; хочется жить с ним не через борьбу и самокритику.</li>
+      <li class="reveal">В работе и переговорах бывает, что теряется опора или долго приходится отходить после сложных разговоров; хочется сохранять контакт с собой и ясность.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════ SELF, СОСТОЯНИЕ И НАВЫК + МЕТОД ══════ -->
+<section class="section-warm" id="self-state">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Self, состояние и навык</h2>
+    </div>
+    <div class="self-text">
+      <p class="reveal"><strong>Self</strong> в IFS — это состояние, из которого возможны любопытство, спокойствие, принятие. Моя задача — помочь вам выстроить <strong>контакт с Self</strong> и сделать <strong>работу с частями и состоянием вашим навыком</strong>. Вы учитесь замечать части, входить с ними в контакт, выстраивать отношения, а также работать с состоянием и телесными ощущениями (напряжение, тяжесть, сжатие, вялость). <strong>Умение возвращаться в опору и слышать себя</strong> становится тем, чем вы безусильно пользуетесь самостоятельно в повседневной жизни.</p>
+      <div class="callout reveal">
+        <strong>На сессиях</strong> мы и знакомимся с частями, и целенаправленно работаем с состоянием: замечать, что с вами происходит, опираться на тело и дыхание, возвращаться в ресурс. Цель — чтобы со временем вы делали это сами в повседневной жизни, включая острые эмоциональные ситуации.
+      </div>
+    </div>
+
+    <div class="expandable reveal" id="method">
+      <button class="expandable-toggle" onclick="toggleExpand(this)">
+        <span style="display:inline-flex;align-items:center;gap:0.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:1.3rem;height:1.3rem;color:var(--sage);opacity:0.7;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Метод: IFS и Evolving IFS</span>
+        <span class="arrow">&#x25BC;</span>
+      </button>
+      <div class="expandable-body">
+        <div class="expandable-body-inner">
+          <h4>Что такое IFS</h4>
+          <p>В IFS (Internal Family Systems) паттерны, установки, внутренние голоса рассматриваются как <strong>части</strong> — с ними можно выстраивать отношения. У каждой части благое намерение, каждая по-своему защищает. В центре метода — <strong>Self</strong>: состояние присутствия и принятия, из которого возможен контакт с частями. Метод даёт снять внутреннее напряжение и выстроить навык: замечать части, выстраивать с ними отношения, двигаться к большей целостности. Исследования показывают эффективность в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
+          <h4>Evolving IFS</h4>
+          <p>Evolving IFS включает в себя классический IFS и добавляет упор на <strong>доверительное пространство</strong>, контакт и присутствие. В начале сессии — сонастройка, работа с состоянием и телом. Вы получаете опыт быть увиденным, услышанным и принятым — и на этом строятся устойчивость и способность опираться на себя.</p>
         </div>
       </div>
-    </header>
+    </div>
+  </div>
+</section>
 
-    <section class="section-alt reveal" id="zaprosy">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg></span>Для кого</h2>
-        <ul class="bullets">
-          <li>Есть опыт терапии и медитации, но в жизнь это не всегда переносится: понимания много, а практических изменений мало, и внимание снова уходит в голову.</li>
-          <li>Хочется меньше реагировать на автомате: иногда это получается, а в какой‑то момент всё равно срабатывают старые паттерны.</li>
-          <li>С гневом непросто: чаще он сдерживается, чем выражается. Важно найти с ним такой контакт, в котором он замечен, но не захватывает.</li>
-          <li>Внутри звучит голос, который всех «чинит» или вечно недоволен; хочется жить с ним не через борьбу и самокритику.</li>
-          <li>В работе и переговорах бывает, что теряется опора или долго приходится отходить после сложных разговоров; хочется сохранять контакт с собой и ясность.</li>
-        </ul>
+<!-- ══════ КАК ПРОХОДИТ СЕССИЯ ══════ -->
+<section class="section-light" id="session">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Как проходит сессия со мной</h2>
+    </div>
+    <ul class="steps">
+      <li class="reveal"><strong>Сонастройка через тело и дыхание</strong> — баланс нервной системы, контакт с состоянием перед тем, как обращаться к частям.</li>
+      <li class="reveal"><strong>Работа с запросом:</strong> знакомимся с частями и установками, которые создают напряжение; выстраиваем отношения. Параллельно — работа с состоянием: замечать телесные ощущения, возвращаться в опору и в Self.</li>
+      <li class="reveal"><strong>Рекомендации и упражнения,</strong> которые можно пробовать между сессиями самостоятельно — для внедрения в повседневную жизнь.</li>
+    </ul>
+    <p class="pace-note reveal">Темп и направление задаёт ваша система — идём туда, куда она сама хочет идти.</p>
+  </div>
+</section>
+
+<!-- ══════ ОТЗЫВЫ ══════ -->
+<section class="section-dark" id="reviews">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Что говорят люди, которые внедрили IFS в свою жизнь</h2>
+    </div>
+    <div class="testimonial-tabs reveal">
+      <button class="t-tab active" onclick="switchTab(this,'personal')">Личные отношения и ощущение себя</button>
+      <button class="t-tab" onclick="switchTab(this,'business')">Бизнес и работа</button>
+    </div>
+    <div id="tab-personal" class="t-group active">
+      <div class="t-card reveal">«Для меня это как будто новый уровень осознанности, новый слой открывается. Когда в моменте осознаешь часть, которая тебя захватывает, ты можешь с ней разъединиться, и тогда появляется больше ясности.»</div>
+      <div class="t-card reveal">«Стало меньше реактивной реакции. Вместо того чтобы действовать как хочет протектор, я замедляюсь, даю ему пространство внутри позлиться, и только потом начинаю что-то делать. В итоге вместо большой ссоры с мужем на неделю получился живой и классный диалог.»</div>
+      <div class="t-card reveal">«Больше появилось сострадания к своим частям, соответственно, и к другим людям тоже. Это меняет отношения с близкими.»</div>
+    </div>
+    <div id="tab-business" class="t-group">
+      <div class="t-card reveal">«В диалоге с деловыми партнёрами я объясняю через части, почему я хочу чего-то конкретным образом. Это помогает снизить напряжённость, особенно когда у тебя есть часть-перфекционист, которой надо, чтобы всё было идеально.»</div>
+      <div class="t-card reveal">«В бизнесе, когда ты с партнёром можешь говорить на этом языке, можно избегать очень многих конфликтов.»</div>
+      <div class="t-card reveal">«С коллегами в рабочей коммуникации общение через контекст частей сильно снижает градус обсуждения — появляется понимание, что в разговоре реагирует конкретная часть, а не весь человек… это делает разговор более экологичным.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ФОРМАТЫ ══════ -->
+<section class="section-light" id="first-step">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Форматы работы</h2>
+    </div>
+    <div class="format-free reveal">
+      <h3>Встреча-знакомство — 20 минут, бесплатно</h3>
+      <p>На ней вы сможете задать любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом, а также понять, подходит ли вам такой формат работы сейчас.</p>
+    </div>
+    <ul class="format-list">
+      <li class="reveal">
+        <strong>Разовая сессия — 60 или 90 минут (80 € / 120 €)</strong>
+        <span class="desc">Попробовать метод, прояснить один вопрос, почувствовать, как идёт работа.</span>
+      </li>
+      <li class="reveal">
+        <strong>Месяц — 4 встречи по 1 ч, 280 €</strong>
+        <span class="desc">Поддержка под вашу задачу: познакомиться со своей системой частей и состоянием, начать делать это своим навыком.</span>
+      </li>
+      <li class="reveal">
+        <strong>Два месяца — 8 встреч по 1 ч, 500 €</strong>
+        <span class="desc">Для тех, кто хочет двигаться в эту сторону: устойчивые навыки Self и работы с частями и состоянием, выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</span>
+      </li>
+    </ul>
+    <p class="format-note reveal">Возможна оплата в рублях и криптовалюте.</p>
+    <a href="https://t.me/Alena_Pavlenko_PhD" target="_blank" class="btn-tg reveal">Записаться на бесплатную встречу</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ МОЙ ПУТЬ ══════ -->
+<section class="section-light" id="about">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="bar"></div>
+      <h2>Мой путь</h2>
+    </div>
+    <p class="path-intro reveal">Карьера до практики, как пришла к IFS и телесной работе, у кого училась и чем занимаюсь сейчас.</p>
+
+    <div class="path-photo-standalone reveal">
+      <div class="path-photo">
+        <img src="images/DSCF3617 cropped.jpg" alt="Алёна Павленко">
       </div>
-    </section>
+    </div>
 
-    <section class="section-self-state reveal" id="self-state">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg></span>Self, состояние и навык</h2>
-        <p><strong>Self</strong> в IFS — это состояние, из которого возможны любопытство, спокойствие, принятие. Моя задача — помочь вам выстроить <strong>контакт с Self</strong> и сделать <strong>работу с частями и состоянием вашим навыком</strong>. Вы учитесь замечать части, входить с ними в контакт, выстраивать отношения, а также работать с состоянием и телесными ощущениями (напряжение, тяжесть, сжатие, вялость). <strong>Умение возвращаться в опору и слышать себя</strong> становится тем, чем вы безусильно пользуетесь самостоятельно в повседневной жизни.</p>
-        <div class="highlight-box">
-          <p><strong>На сессиях</strong> мы и знакомимся с частями, и целенаправленно работаем с состоянием: замечать, что с вами происходит, опираться на тело и дыхание, возвращаться в ресурс. Цель — чтобы со временем вы делали это сами в повседневной жизни, включая острые эмоциональные ситуации.</p>
-        </div>
+    <div class="path-block reveal">
+      <div class="path-label">Карьера</div>
+      <p>По первой профессии я <strong>физик, PhD</strong> — аспирантура в Германии, постдоки в США и Великобритании. Потом перешла в <strong>стратегический консалтинг (Deloitte)</strong> в Голландии. Мне всегда было интересно разбираться в сложных системах и искать решения, которые работают. Много переездов и смен — знаю по себе, как теряется опора и как её заново находить. Для меня устойчивые изменения вырастают из <strong>доверия к себе и к процессу</strong>.</p>
+    </div>
+
+    <div class="path-block reveal">
+      <div class="path-label">Путь к практике</div>
+      <p>Я не планировала становиться практиком. Сначала годы своей терапии, потом <strong>350+ часов телесной практики</strong> — баня, массаж, работа с телом и состоянием. Потом появился IFS, работа с частями и Self. То, что помогало мне самой, было естественным для меня — осваивала глубоко. Метод дал мне колоссальный результат и внедрился в мою жизнь, значимо повысив уровень удовлетворённости. Со временем стали обращаться: сначала по телу и состоянию, потом по IFS.</p>
+    </div>
+
+    <div class="path-block reveal">
+      <div class="path-label">Обучение IFS</div>
+      <p>IFS я узнала через <strong>Гэтри Сайена</strong> — он ученик Ричарда Шварца и один из ведущих преподавателей Evolving IFS, в том числе работы с состоянием и Self. У него больше 15 лет преподавания и больше 10 000 часов с клиентами. Я <strong>два года училась у него</strong> плюс прошла курс Ричарда Шварца IFS and Spirituality.</p>
+    </div>
+
+    <div class="path-block reveal">
+      <div class="path-label">Сейчас</div>
+      <p>Из академии и консалтинга у меня <strong>системное мышление</strong>. Из телесной практики — <strong>умение слышать состояние и быть в теле</strong>. В IFS Academy я не только эксперт и куратор: проектирую, как мы доносим материал до студентов и выстраиваем процесс интеграции знаний в жизнь и практику, фасилитирую практические сессии. Веду индивидуальную работу по IFS (Self, части, состояние) и по-прежнему веду телесную практику.</p>
+    </div>
+
+    <div class="path-values reveal">
+      <div class="path-label">Что для меня важно</div>
+      <p>Делиться опытом, который реально работает. Помогать людям выстроить контакт со своей системой и стать в этом самостоятельными — <strong>чтобы навык оставался с вами</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ ПЕРВЫЙ ШАГ ══════ -->
+<section class="cta-section" id="zapis">
+  <div class="cta-inner">
+    <div>
+      <h2 class="reveal"><span class="bar"></span> Первый шаг</h2>
+      <p class="reveal">Напишите в Telegram — подберём время для бесплатной 20-минутной встречи. Обсудим запрос и формат.</p>
+      <a href="https://t.me/Alena_Pavlenko_PhD" target="_blank" class="btn-tg reveal">Написать в Telegram</a>
+    </div>
+    <div style="display:flex;justify-content:center;">
+      <div class="cta-photo reveal">
+        <img src="images/DSCF3617 cropped1.jpg" alt="Алёна Павленко">
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="container method section-method reveal" id="method">
-      <details class="method-toggle">
-        <summary class="method-toggle-title">
-          <span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.75 6.75c2.25-1.3 4.5-1.3 6.75 0v10.5c-2.25-1.3-4.5-1.3-6.75 0V6.75Zm6.75 0c2.25-1.3 4.5-1.3 6.75 0v10.5c-2.25-1.3-4.5-1.3-6.75 0V6.75Z" /></svg></span>
-          <span class="method-title-text">Что такое IFS (Classic и Evolving)</span>
-        </summary>
-        <h3>Что такое IFS</h3>
-        <p>В IFS (Internal Family Systems) паттерны, установки, внутренние голоса рассматриваются как <strong>части</strong> — с ними можно выстраивать отношения. У каждой части благое намерение, каждая по-своему защищает. В центре метода — <strong>Self</strong>: состояние присутствия и принятия, из которого возможен контакт с частями. Метод даёт снять внутреннее напряжение и выстроить навык: замечать части, выстраивать с ними отношения, двигаться к большей целостности. Исследования показывают эффективность в работе с депрессией, тревогой, устойчивостью и самоотношением.</p>
-        <h3>Evolving IFS</h3>
-        <p>Evolving IFS включает в себя классический IFS и добавляет упор на <strong>доверительное пространство</strong>, контакт и присутствие. В начале сессии — сонастройка, работа с состоянием и телом. Вы получаете опыт быть увиденным, услышанным и принятым — и на этом строятся устойчивость и способность опираться на себя.</p>
-      </details>
-    </section>
+<div class="divider"></div>
+<footer style="text-align:center;padding:2rem 1rem 1.5rem;font-size:0.78rem;color:var(--text-soft);opacity:0.6;">
+  Алёна Павленко · 2026
+</footer>
 
-    <section class="section-alt reveal" id="session">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" /></svg></span>Как проходит сессия</h2>
-        <ul class="bullets">
-          <li>Сонастройка через тело и дыхание — баланс нервной системы, контакт с состоянием перед тем, как обращаться к частям.</li>
-          <li>Работа с запросом: знакомимся с частями и установками, которые создают напряжение; выстраиваем отношения. Параллельно — работа с состоянием: замечать телесные ощущения, возвращаться в опору и в Self.</li>
-          <li>Рекомендации и упражнения, которые можно пробовать между сессиями самостоятельно — для внедрения в повседневную жизнь.</li>
-          <li>Темп и направление задаёт ваша система — идём туда, куда она сама хочет идти.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section-quotes reveal" id="reviews">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg></span>Что говорят люди, которые внедрили IFS в свою жизнь</h2>
-        <div class="quotes-subsections">
-          <details class="quotes-subsection" open>
-            <summary class="quotes-subsection-title">
-              <span>Личные отношения и ощущение себя</span>
-              <span class="quotes-toggle-icon" aria-hidden="true"></span>
-            </summary>
-            <div class="quotes">
-              <blockquote>«Для меня это как будто новый уровень осознанности, новый слой открывается. Когда в моменте осознаешь часть, которая тебя захватывает, ты можешь с ней разъединиться, и тогда появляется больше ясности.»</blockquote>
-              <blockquote>«Стало меньше реактивной реакции. Вместо того чтобы действовать как хочет протектор, я замедляюсь, даю ему пространство внутри позлиться, и только потом начинаю что-то делать. В итоге вместо большой ссоры с мужем на неделю получился живой и классный диалог.»</blockquote>
-              <blockquote>«Больше появилось сострадания к своим частям, соответственно, и к другим людям тоже. Это меняет отношения с близкими.»</blockquote>
-            </div>
-          </details>
-          <details class="quotes-subsection">
-            <summary class="quotes-subsection-title">
-              <span>Бизнес и работа</span>
-              <span class="quotes-toggle-icon" aria-hidden="true"></span>
-            </summary>
-            <div class="quotes">
-              <blockquote>«В диалоге с деловыми партнёрами я объясняю через части, почему я хочу чего-то конкретным образом. Это помогает снизить напряжённость, особенно когда у тебя есть часть-перфекционист, которой надо, чтобы всё было идеально.»</blockquote>
-              <blockquote>«В бизнесе, когда ты с партнёром можешь говорить на этом языке, можно избегать очень многих конфликтов.»</blockquote>
-              <blockquote>«С коллегами в рабочей коммуникации общение через контекст частей сильно снижает градус обсуждения — появляется понимание, что в разговоре реагирует конкретная часть, а не весь человек… это делает разговор более экологичным.»</blockquote>
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-alt reveal" id="first-step">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg></span>Форматы работы</h2>
-        <div class="intro-meeting">
-          <p><strong>Встреча-знакомство</strong> — 20 минут, бесплатно. На ней вы сможете задать любые вопросы, ближе познакомиться с методом IFS и поделиться своим запросом, а также понять, подходит ли вам такой формат работы сейчас.</p>
-        </div>
-        <div class="formats">
-          <dl>
-            <dt>Разовая сессия — 60 или 90 минут (80 € / 120 €)</dt>
-            <dd>Попробовать метод, прояснить один вопрос, почувствовать, как идёт работа.</dd>
-            <dt>Месяц — 4 встречи по 1 ч, 280 €</dt>
-            <dd>Поддержка под вашу задачу: познакомиться со своей системой частей и состоянием, начать делать это своим навыком.</dd>
-            <dt>Два месяца — 8 встреч по 1 ч, 500 €</dt>
-            <dd>Для тех, кто хочет двигаться в эту сторону: устойчивые навыки Self и работы с частями и состоянием, выйти из выживания и внутреннего сопротивления, прийти к системе, способной реализовать свой потенциал.</dd>
-          </dl>
-          <p class="prices-note">Возможна оплата в рублях и криптовалюте.</p>
-        </div>
-        <p style="margin-top: 1.5rem; margin-bottom: 0;"><a href="https://t.me/Alena_Pavlenko_PhD" class="btn">Записаться на бесплатную встречу</a></p>
-      </div>
-    </section>
-
-    <section class="section-about reveal" id="about">
-      <div class="container">
-        <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></span>Мой путь</h2>
-        <p style="margin-bottom: 1.5rem;">Карьера до практики, как пришла к IFS и телесной работе, у кого училась и чем занимаюсь сейчас.</p>
-        <div class="about-top">
-          <div class="photo-wrap">
-            <span class="about-photo-inner"><img src="images/DSCF3617 cropped.jpg" alt="Алёна Павленко" width="180" height="180"></span>
-          </div>
-          <div class="about-career-block about-text">
-            <p class="about-block-label">Карьера</p>
-            <p>По первой профессии я <strong>физик, PhD</strong> — аспирантура в Германии, постдоки в США и Великобритании. Потом перешла в <strong>стратегический консалтинг (Deloitte)</strong> в Голландии. Мне всегда было интересно разбираться в сложных системах и искать решения, которые работают. Много переездов и смен — знаю по себе, как теряется опора и как её заново находить. Для меня устойчивые изменения вырастают из <strong>доверия к себе и к процессу</strong>.</p>
-          </div>
-        </div>
-        <div class="about-rest about-text">
-          <p class="about-block-label">Путь к практике</p>
-          <p>В эту работу я пришла <strong>не по плану</strong>. Сначала годы своей терапии, потом <strong>350+ часов телесной практики</strong> — баня, массаж, работа с телом и состоянием. Потом появился IFS, работа с частями и Self. То, что помогало мне самой, было естественным для меня — осваивала глубоко. Метод дал мне колоссальный результат и внедрился в мою жизнь, значимо повысив уровень удовлетворённости. Со временем стали обращаться: сначала по телу и состоянию, потом по IFS.</p>
-          <p class="about-block-label">Обучение IFS</p>
-          <p>IFS я узнала через <strong>Гэтри Сайена</strong> — он ученик Ричарда Шварца и один из ведущих преподавателей Evolving IFS, в том числе работы с состоянием и Self. У него больше 15 лет преподавания и больше 10 000 часов с клиентами. Я <strong>два года училась у него</strong> плюс прошла курс Ричарда Шварца IFS and Spirituality.</p>
-          <p class="about-block-label">Сейчас</p>
-          <p>Из академии и консалтинга у меня <strong>системное мышление</strong>. Из телесной практики — <strong>умение слышать состояние и быть в теле</strong>. В IFS Academy я не только эксперт и куратор: проектирую, как мы доносим материал до студентов и выстраиваем процесс интеграции знаний в жизнь и практику, фасилитирую практические сессии. Веду индивидуальную работу по IFS (Self, части, состояние) и по-прежнему веду телесную практику.</p>
-          <p class="about-block-label">Что для меня важно</p>
-          <p>Делиться опытом, который реально работает. Помогать людям выстроить контакт со своей системой и стать в этом самостоятельными — <strong>чтобы навык оставался с вами</strong>.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-cta" id="zapis">
-      <div class="container">
-        <div class="cta-inner">
-          <div class="cta-content">
-            <h2 class="section-title-ico"><span class="section-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg></span>Первый шаг</h2>
-            <p>Напишите в Telegram — подберём время для бесплатной 20-минутной встречи. Обсудим запрос и формат.</p>
-            <a href="https://t.me/Alena_Pavlenko_PhD" class="btn">Написать в Telegram</a>
-          </div>
-          <div class="cta-photo">
-            <span class="cta-photo-inner"><img src="images/DSCF3617 cropped1.jpg" alt="" width="140" height="140"></span>
-          </div>
-        </div>
-      </div>
-    </section>
-</main>
 <script>
-  (function () {
-    if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('.reveal').forEach(function (el) {
-        el.classList.add('visible');
-      });
-      return;
-    }
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0 }
-    );
-    document.querySelectorAll('.reveal').forEach(function (el) {
-      observer.observe(el);
-      var rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        el.classList.add('visible');
-      }
-    });
-  })();
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    observer.observe(el);
+    var rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) el.classList.add('visible');
+  });
+})();
+
+function switchTab(btn, id) {
+  document.querySelectorAll('.t-tab').forEach(function (t) { t.classList.remove('active'); });
+  document.querySelectorAll('.t-group').forEach(function (g) { g.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleExpand(btn) {
+  var body = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  body.style.maxHeight = btn.classList.contains('open') ? body.scrollHeight + 'px' : '0';
+}
 </script>
 </body>
 </html>
